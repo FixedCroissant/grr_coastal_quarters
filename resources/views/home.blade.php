@@ -3,7 +3,11 @@
 @section('htmlheader_title')
     Home
 @endsection
-
+<!--Main Heading of Page-->
+@section('contentheader_title')
+	Main Landing Page
+	<br/>
+@stop
 
 @section('main-content')
 <div class="container">
@@ -14,6 +18,12 @@
 
 				<div class="panel-body">
 					You are logged in!
+
+					<br/>
+					<br/>
+					Please check <SPAN style="font-weight:bold;">current reservations</SPAN> to your left.
+					<br/>
+					<br/>
 				</div>
 			</div>
 		</div>

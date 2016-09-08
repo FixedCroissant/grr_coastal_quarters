@@ -1,6 +1,84 @@
 @extends('layout.master')
 
 @section('content')
+    <!--Needed for Date Picker for the Arrival and Departure Dates-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script>
+        //Arrival Date
+        $(function() {
+
+            $("#datepickerCalendarArrival").click(function () {
+                alert('datePickerArrivalClicked!');
+                $( "#datepickerArrival" ).datepicker('show');
+
+            })
+
+        //Arrival Date
+            $( function() {
+                $( "#datepickerArrival" ).datepicker({
+                    showOn: "button",
+                    buttonImage: "{{URL::asset('img/calendarPick.png')}}",
+                    buttonImageOnly: true,
+                    buttonText: "Select arrival date",
+                    dateFormat: "yy-mm-dd"
+                });
+            } );
+
+        });
+        //Departure Date
+        $(function() {
+
+            $( "#datepickerDeparture" ).datepicker({
+                showOn: "button",
+                buttonImage: "{{URL::asset('img/calendarPick.png')}}",
+                buttonImageOnly: true,
+                buttonText: "Select departure date",
+                dateFormat:"yy-mm-dd"
+            });
+
+        });
+
+        //Handle Billing Information if it's the same as guest information
+        $(document).ready(function(){
+
+            $('input[name="billingSameAsGuest"]').click(function(){
+                //guest inputs
+                var guestFirstName     =  $('input[name="firstNAME"]').val();
+                var guestLastName      =$('input[name="lastNAME"]').val();
+                var guestEmailAddress  =$('input[name="guestEMail"]').val();
+
+
+
+                if($(this).prop("checked") == true){
+                    //Stick Guest First Name as Billing First Name
+                    $('input[name="billingFirst_NAME"]').val(guestFirstName);
+                    //Stick Guest Last Name as Billing Last Name
+                    $('input[name="billingLast_NAME"]').val(guestLastName);
+                    //Stick guest e-mail address as billing e-mail address
+                    $('input[name="billingEMail"]').val(guestEmailAddress);
+
+                }
+
+                else if($(this).prop("checked") == false){
+                    //Remove all text elements from billing.
+                    //Stick Guest First Name as Billing First Name
+                    $('input[name="billingFirst_NAME"]').val("");
+                    //Stick Guest Last Name as Billing Last Name
+                    $('input[name="billingLast_NAME"]').val("");
+                    //Stick guest e-mail address as billing e-mail address
+                    $('input[name="billingEMail"]').val("");
+
+                }
+
+            });
+
+        });
+
+
+
+    </script>
+    <!--End Need for the Arrival and Departure Dates-->
     <div class="row">
         &nbsp;
     </div>
@@ -25,6 +103,7 @@
             <p>
                 This is a request for a guest room. There is no guarantee that a room will be available on the date(s) you desire. <br/>
                 If space is available for that time, you will be sent an email with a link to pay online. <br/>
+                <br/>
                 Only after payment will your reservation be secured.
                 <br/>
                 <br/>
@@ -52,6 +131,13 @@
 
     {!! Form::open(array('route' => 'reservation.store')) !!}
 
+
+    <!--Messages Page-->
+    <div class="row">
+        @if(Session::has('message'))
+            <p class="alert alert-info">{{ Session::get('message') }}</p>
+        @endif
+    </div>
     <!--Errors Page-->
     <div class="row">
         @if($errors->has())
@@ -78,180 +164,248 @@
     <div class="row">
       <form class="form-group">
           <div class="row">
-                  <label class="control-label col-sm-2">
+                  <label class="control-label col-sm-2 required">
                       First Name:
                   </label>
                   <div class="col-sm-5">
-                      <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                      {!! Form::text('firstNAME',Input::old('firstNAME'),array('class'=>'form-control')) !!}
                   </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-                  <label class="control-label col-sm-2">
+                  <label class="control-label col-sm-2 required">
                       Last Name:
                   </label>
                   <div class="col-sm-5">
-                      <input type="text" class="form-control" id="last_name" name="lastNAME"/>
+                      {!! Form::text('lastNAME',Input::old('lastNAME'),array('class'=>'form-control')) !!}
                   </div>
-            </div>
-          <div class="row">
-              &nbsp;
           </div>
 
-          <!--Billing Name-->
           <div class="row">
-              <label class="control-label col-sm-2">
-                  Billing Name:
+              &nbsp;
+          </div>
+          <div class="row">
+              <label class="control-label col-sm-2 required">
+                Guest  E-Mail Address:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="billingNAME"/>
+                  {!! Form::text('guestEMail',Input::old('guestEMail'),array('class'=>'form-control')) !!}
               </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
-                  Address Line 1:
-              </label>
-              <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
-              </div>
-          </div>
-          <div class="row">
-              &nbsp;
-          </div>
-          <div class="row">
-              <label class="control-label col-sm-2">
-                  Address Line 2:
-              </label>
-              <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
-              </div>
-          </div>
-          <div class="row">
-              &nbsp;
-          </div>
-          <div class="row">
-              <label class="control-label col-sm-2">
-                  City:
-              </label>
-              <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
-              </div>
-          </div>
-          <div class="row">
-              &nbsp;
-          </div>
-          <div class="row">
-              <label class="control-label col-sm-2">
-                  State:
-              </label>
-              <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
-              </div>
-          </div>
-          <div class="row">
-              &nbsp;
-          </div>
-          <div class="row">
-              <label class="control-label col-sm-2">
-                  Zip Code:
-              </label>
-              <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
-              </div>
-          </div>
-          <div class="row">
-              &nbsp;
-          </div>
-          <div class="row">
-              <label class="control-label col-sm-2">
-                 Country (If Not US):
-              </label>
-              <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
-              </div>
-          </div>
-          <div class="row">
-              &nbsp;
-          </div>
-          <div class="row">
-              <label class="control-label col-sm-2">
+              <label class="control-label col-sm-2 required">
                   Phone Number:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                  {!! Form::text('guestPhone',Input::old('guestPhone'),array('class'=>'form-control','maxlength'=>'12')) !!}
+              </div>
+          </div>
+          <div class="row">
+              &nbsp;
+          </div>
+
+          <div class="row">
+              <label class="control-label col-sm-2 required">
+                  Arrival Date:
+              </label>
+              <div class="col-sm-2">
+                  {!!  Form::text('guestarrivalDate',Input::old('guestarrivalDate'),array('id'=>'datepickerArrival','class'=>'form-control')) !!}
+
               </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
+              <label class="control-label col-sm-2 required">
+                  Departure Date:
+              </label>
+              <div class="col-sm-2">
+                  {!!  Form::text('guestdepartureDate',Input::old('guestdepartureDate'),array('id'=>'datepickerDeparture','class'=>'form-control')) !!}
+              </div>
+          </div>
+          <div class="row">
+              &nbsp;
+          </div>
+          <div class="row">
+              <label class="control-label col-sm-2 required">
+                  Total Guests:<br/>
+                  <span style="font-size:xx-small;">Please include yourself</span>
+              </label>
+              <div class="col-sm-5">
+
+                    {!! Form::selectRange('totalGUESTS_INDICATED',1,20,array('class'=>'form-control')) !!}
+
+              </div>
+          </div>
+
+
+
+
+          <div class="row border_bottom_header">
+              <h2>Billing Information</h2>
+          </div>
+          <div class="row">
+              &nbsp;
+          </div>
+          <!--Billing F. Name-->
+          <div class="row">
+              <label class="control-label col-sm-2 required">
+                  Billing First Name:
+              </label>
+              <div class="col-sm-5">
+                  {!!  Form::text('billingFirst_NAME',Input::old('billingFirst_NAME'),array('class'=>'form-control')) !!}
+              </div>
+              <div class="col-sm-4" style="border:1px solid lightgrey;">
+                   {!!  Form::checkbox('billingSameAsGuest',null)  !!}
+                  Billing Information is the same as <br/>
+                  Guest Information Above.
+              </div>
+          </div>
+          <div class="row">
+              &nbsp;
+          </div>
+          <!--Billing L. Name-->
+          <div class="row">
+              <label class="control-label col-sm-2 required">
+                  Billing Last Name:
+              </label>
+              <div class="col-sm-5">
+                  {!!  Form::text('billingLast_NAME',Input::old('billingLast_NAME'),array('class'=>'form-control')) !!}
+              </div>
+          </div>
+          <div class="row">
+              &nbsp;
+          </div>
+          <div class="row">
+              <label class="control-label col-sm-2 required">
                   E-Mail Address:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                  {!!  Form::text('billingEMail',Input::old('billingEMail'),array('class'=>'form-control')) !!}
               </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
-                  Arrival Date:
+              <label class="control-label col-sm-2 required">
+                  Address Line 1:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                  {!!  Form::text('billingAddressLine001',Input::old('billingAddressLine001'),array('class'=>'form-control')) !!}
               </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
-                  Departure Date:
+              <label class="control-label col-sm-2 required">
+                  Address Line 2:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                  {!!  Form::text('billingAddressLine002',Input::old('billingAddressLine002'),array('class'=>'form-control')) !!}
               </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
-                  Total Guests:
+              <label class="control-label col-sm-2 required">
+                  City:
               </label>
               <div class="col-sm-5">
-                  <select name="totalGUESTS" class="form-control">
+                  {!!  Form::text('billingCity',Input::old('billingCity'),array('class'=>'form-control')) !!}
+              </div>
+          </div>
+          <div class="row">
+              &nbsp;
+          </div>
+          <div class="row">
+              <label class="control-label col-sm-2 required">
+                  State:
+              </label>
+              <div class="col-sm-5">
+                 <select class="form-control" id="billingState" name="billingState">
                       <option value="">Select ...</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                      <option value="13">13</option>
-                      <option value="14">14</option>
-                      <option value="15">15</option>
-                      <option value="16">16</option>
-                      <option value="17">17</option>
-                      <option value="18">18</option>
-                      <option value="19">19</option>
-                      <option value="20">20</option>
+                      <option value="AL">Alabama</option>
+                      <option value="AK">Alaska</option>
+                      <option value="AZ">Arizona</option>
+                      <option value="AR">Arkansas</option>
+                      <option value="CA">California</option>
+                      <option value="CO">Colorado</option>
+                      <option value="CT">Connecticut</option>
+                      <option value="DE">Delaware</option>
+                      <option value="FL">Florida</option>
+                      <option value="GA">Georgia</option>
+                      <option value="HI">Hawaii</option>
+                      <option value="ID">Idaho</option>
+                      <option value="IL">Illinois</option>
+                      <option value="IN">Indiana</option>
+                      <option value="IA">Iowa</option>
+                      <option value="KS">Kansas</option>
+                      <option value="KY">Kentucky</option>
+                      <option value="LA">Louisiana</option>
+                      <option value="ME">Maine</option>
+                      <option value="MD">Maryland</option>
+                      <option value="MA">Massachusetts</option>
+                      <option value="MI">Michigan</option>
+                      <option value="MN">Minnesota</option>
+                      <option value="MS">Mississippi</option>
+                      <option value="MO">Missouri</option>
+                      <option value="MT">Montana</option>
+                      <option value="NE">Nebraska</option>
+                      <option value="NV">Nevada</option>
+                      <option value="NH">New Hampshire</option>
+                      <option value="NJ">New Jersey</option>
+                      <option value="NM">New Mexico</option>
+                      <option value="NY">New York</option>
+                      <option value="NC" selected>North Carolina</option>
+                      <option value="ND">North Dakota</option>
+                      <option value="OH">Ohio</option>
+                      <option value="OK">Oklahoma</option>
+                      <option value="OR">Oregon</option>
+                      <option value="PA">Pennsylvania</option>
+                      <option value="RI">Rhode Island</option>
+                      <option value="SD">South Dakota</option>
+                      <option value="TN">Tennessee</option>
+                      <option value="TX">Texas</option>
+                      <option value="UT">Utah</option>
+                      <option value="VT">Vermont</option>
+                      <option value="VA">Virginia</option>
+                      <option value="WA">Washington</option>
+                      <option value="WV">West Virginia</option>
+                      <option value="WI">Wisconsin</option>
+                      <option value="WY">Wyoming</option>
                   </select>
 
-
+              </div>
+          </div>
+          <div class="row">
+              &nbsp;
+          </div>
+          <div class="row">
+              <label class="control-label col-sm-2 required">
+                  Zip Code:
+              </label>
+              <div class="col-sm-5">
+                  {!!  Form::text('billingZipCode',Input::old('billingZipCode'),array('class'=>'form-control','maxlength'=>'9')) !!}
+              </div>
+          </div>
+          <div class="row">
+              &nbsp;
+          </div>
+          <div class="row">
+              <label class="control-label col-sm-2 required">
+                 Country (If Not US):
+              </label>
+              <div class="col-sm-5">
+                  {!!  Form::text('billingCountry',Input::old('billingCountry'),array('class'=>'form-control')) !!}
               </div>
           </div>
           <!--Three Blank Rows-->
@@ -273,84 +427,84 @@
               </div>
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
+              <label class="control-label col-sm-2 required">
                   Host First Name:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                  {!!  Form::text('hostfirstNAME',Input::old('hostfirstNAME'),array('class'=>'form-control')) !!}
               </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
+              <label class="control-label col-sm-2 required">
                   Host Last Name:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                  {!!  Form::text('hostlastNAME',Input::old('hostlastNAME'),array('class'=>'form-control')) !!}
               </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
+              <label class="control-label col-sm-2 required">
                   Host Title:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                  {!!  Form::text('hostTITLE',Input::old('hostTITLE'),array('class'=>'form-control')) !!}
               </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
+              <label class="control-label col-sm-2 required">
                   Host Department or Organization:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                  {!!  Form::text('hostDEPARTMENT',Input::old('hostDEPARTMENT'),array('class'=>'form-control')) !!}
               </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
+              <label class="control-label col-sm-2 required">
                   Host Address Line 1:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                  {!!  Form::text('hostADDRESSLINE001',Input::old('hostADDRESSLINE001'),array('class'=>'form-control')) !!}
               </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
+              <label class="control-label col-sm-2 required">
                   Host Address Line 2:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                  {!!  Form::text('hostADDRESSLINE002',Input::old('hostADDRESSLINE002'),array('class'=>'form-control')) !!}
               </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
+              <label class="control-label col-sm-2 required">
                   City:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                  {!!  Form::text('hostCITY',Input::old('hostCITY'),array('class'=>'form-control')) !!}
               </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
+              <label class="control-label col-sm-2 required">
                   State:
               </label>
               <div class="col-sm-5">
@@ -412,33 +566,33 @@
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
+              <label class="control-label col-sm-2 required">
                   Zip Code:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                  {!!  Form::text('hostZIP_CODE',Input::old('hostZIP_CODE'),array('class'=>'form-control')) !!}
               </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
+              <label class="control-label col-sm-2 required">
                   Phone Number:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                  {!!  Form::text('hostPHONE_NUMBER',Input::old('hostPHONE_NUMBER'),array('class'=>'form-control')) !!}
               </div>
           </div>
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2">
+              <label class="control-label col-sm-2 required">
                   EMail Address:
               </label>
               <div class="col-sm-5">
-                  <input type="text" class="form-control" id="first_name" name="firstNAME"/>
+                 {!!  Form::text('hostEMAIL_ADDRESS',Input::old('hostEMAIL_ADDRESS'),array('class'=>'form-control','placeholder'=>'hostAffiliation@ncsu.edu')) !!}
               </div>
           </div>
           <div class="row">
@@ -446,6 +600,52 @@
                   &nbsp;
               </div>
           </div>
+          <hr>
+
+          <div class="row">
+              <label class="control-label col-sm-2 required">
+                  Please provide additional information about reservation here:
+              </label>
+              <div class="col-sm-5">
+                  {!!  Form::textarea('additionalGuestInformation',Input::old('additionalGuestInformation'),array('class'=>'form-control')) !!}
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-12">
+                  &nbsp;
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-sm-6 ">
+                  Do you agree to the following terms?:
+                  <br/>
+                  <a href="#">Link to PDF document to Conference Terms for Coastal Quarters</a>
+
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-12">
+                  &nbsp;
+              </div>
+          </div>
+          <div class="row">
+              <label class="control-label col-sm-2   required">
+                  I agree to the terms.
+              </label>
+              <div class="col-sm-5">
+                  <input type="checkbox" name="agree" value="yes">
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-12">
+                  &nbsp;
+              </div>
+          </div>
+
+
+
+
+
           <div class="row">
               <div class="col-md-12">
                   {!!  Form::submit('Submit Reservation',array('class'=>'btn btn-sm btn-default')) !!}

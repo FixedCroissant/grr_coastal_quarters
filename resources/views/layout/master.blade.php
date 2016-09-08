@@ -1,6 +1,8 @@
 <html>
 <head>
     <title>Coastal Quarters Guest Reservation System</title>
+    <!--jQuery-->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <!--Bootstrap Javascript-->
     <script src="{{URL::asset('js/bootstrap.js')}}"></script>
     <!--Application specific CSS-->
@@ -30,7 +32,7 @@
             <!--Display footer at the bottom of every page-->
             Copyright &copy; 2016 <span style="font-weight:bold;">NC State University Housing</span>
             <br/>
-            For PET System support, questions, or feedback, please contact <a href="mailto:jjwill10@ncsu.edu">Josh Williams</a>, Web Developer
+            For Guest Reservations - Coastal Quarters support, questions, or feedback, please contact <a href="mailto:jjwill10@ncsu.edu">Josh Williams</a>, Web Developer
         </div>
     </div>
 

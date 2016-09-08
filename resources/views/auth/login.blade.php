@@ -8,7 +8,7 @@
 <body class="login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{ url('/home') }}"><b>Admin</b>LTE</a>
+            <a href="{{ url('/home') }}"><b>Guest Reservation</b> Coastal Quarters</a>
         </div><!-- /.login-logo -->
 
     @if (count($errors) > 0)
@@ -47,8 +47,8 @@
             </div><!-- /.col -->
         </div>
     </form>
-    <a href="{{ url('/password/email') }}">I forgot my password</a><br>
-    <a href="{{ url('/auth/register') }}" class="text-center">Register a new membership</a>
+
+
 
 </div><!-- /.login-box-body -->
 
