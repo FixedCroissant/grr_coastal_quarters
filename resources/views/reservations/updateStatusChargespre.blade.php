@@ -107,7 +107,7 @@
                         Room Charges
                     </td>
                     <td>
-                        {!! Form::number('days',$reservations->room_days) !!} days @ 32.50/day = {!! Form::number('totalRoomCharges',$reservations->roomcharge,array('placeholder'=>'Save to See Charge')) !!}
+                        {!! Form::number('days',$reservations->room_days) !!} days @ 40.00/day = {!! Form::number('totalRoomCharges',$reservations->roomcharge,array('placeholder'=>'Save to See Charge')) !!}
                     </td>
                 </tr>
                 <!--Additional Rooms-->
@@ -116,7 +116,7 @@
                         Additional Rooms(s)
                     </td>
                     <td>
-                        {!! Form::number('additionalRoomsDaysNeeded',$reservations->addguestdays) !!} days @ 32.50/day = {!! Form::number('totalAdditionalRoomCharges',$reservations->add_guest_charge,array('placeholder'=>'Save to See Charge')) !!}
+                        {!! Form::number('additionalRoomsDaysNeeded',$reservations->addguestdays) !!} days @ 40.00/day = {!! Form::number('totalAdditionalRoomCharges',$reservations->add_guest_charge,array('placeholder'=>'Save to See Charge')) !!}
                     </td>
                 </tr>
                 <!--End additional rooms-->
@@ -165,7 +165,6 @@
                                 'New'=>'New',
                                 'PendingPmt'=>'Pending Payment',
                                 'Denied'=>'Denied'
-
                         );
                         ?>
 

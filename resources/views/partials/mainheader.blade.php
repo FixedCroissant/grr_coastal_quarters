@@ -35,14 +35,14 @@
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
-                        <img src="/img/ncsu_logo_0001-160x133.jpg" class="user-image" alt="User Image"/>
+                        <img src="{{URL::asset('img/ncsu_logo_0001_160x133.jpg')}}" class="user-image" alt="User Image"/>
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
                         <span class="hidden-xs">{{ Auth::user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
                         <li class="user-header">
-                            <img src="/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+                            <img src="{{URL::asset('img/ncsu_logo_0001_160x133.jpg')}}" class="img-circle" alt="User Image" />
                             <p>
                                 {{ Auth::user()->name }}
                             </p>
@@ -64,7 +64,8 @@
                     </ul>
                 </li>
                 <!-- Control Sidebar Toggle Button -->
-                <li>
+                <!-- Not using-->
+                <li style="display:none;">
                     <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
                 </li>
             </ul>

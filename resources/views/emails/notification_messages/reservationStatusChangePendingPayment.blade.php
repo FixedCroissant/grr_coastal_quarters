@@ -45,7 +45,7 @@ Your reservation charges are outlined below:
     <!--Room Charges-->
     <tr>
         <td>
-            Room Charges @ 32.50/Day
+            Room Charges @ 40.00/Day
         </td>
         <td>
             {{$roomCharge}}
@@ -68,7 +68,7 @@ Your reservation charges are outlined below:
     </tr>
     <tr>
         <td>
-            Additional Room Charge @ 32.50/Day
+            Additional Room Charge @ 40.00/Day
         </td>
         <td>
             {{$additionalGuestCharge}}
@@ -160,7 +160,7 @@ Your reservation charges are outlined below:
             <span style='color:red'>*</span> Guest Location:
             </td>
         <td style='border: 1px solid black; width: 500px;'>
-            CMAST
+            Coastal Quarters
         </td>
         </tr>
     <tr>
@@ -186,7 +186,7 @@ Payment must be made prior to check-in, otherwise, we reserve the right to relea
 <br/>
 Sincerely,
 <br/>
-Coastal Quarters/CMAST Reservations
+Coastal Quarters
 <br/>
 NC State University
 <br/>

@@ -619,7 +619,7 @@
               <div class="col-sm-6 ">
                   Do you agree to the following terms?:
                   <br/>
-                  <a href="#">Link to PDF document to Conference Terms for Coastal Quarters</a>
+                  <a href="{{URL::asset('pdfs/coastal_quarters_terms_and_agreement.pdf')}}">Terms and Agreement</a>
 
               </div>
           </div>

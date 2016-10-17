@@ -20,7 +20,7 @@ Unfortunately, we do not have guest room availability within Coastal Quarters fo
 <br/>
 Sincerely,
 <br/>
-Coastal Quarters/CMAST Reservations
+Coastal Quarters
 <br/>
 NC State University
 <br/>

@@ -317,7 +317,7 @@ class ReservationController extends Controller {
 
         //Start Calc
         //Rate of Rooms per day.
-        $rate = 32.50;
+        $rate = 40.00;
 
         //Total Room Charge
         $roomCharge = ($daysNeeded*$rate);
