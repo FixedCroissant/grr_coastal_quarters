@@ -16,7 +16,19 @@ use Input;
 
 class ReservationController extends Controller {
 
-	/**
+    /**
+     * Create a new controller instance.
+     * Apply authentication middleware
+     * to the following requests:
+     * index, update the record, and delete.
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', ['only' => 'index','update','delete','edit']);
+    }
+
+    /**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
@@ -76,7 +88,7 @@ class ReservationController extends Controller {
             'hostZIP_CODE'=>'required',
             'hostPHONE_NUMBER'=>'required',
             'hostEMAIL_ADDRESS'=>'required',
-            'additionalGuestInformation'=>'required',
+            'billCharge'=>'required',
             'agree'=>'required'
 
         ]);
@@ -85,7 +97,7 @@ class ReservationController extends Controller {
         if ($validator->fails())
         {
             //Go back to the prior page, but take along any input taht was submitted that was correct.
-            return redirect()->back()->withErrors($validator->errors())->withInput();;
+            return redirect()->back()->withErrors($validator->errors())->withInput();
         }
 
         //Everything is okay, go ahead and continue making a reservation.
@@ -156,13 +168,13 @@ class ReservationController extends Controller {
             $reservation->additional_information_about_reservation=$request->input('additionalGuestInformation');
 
             //WHO PAYS??
-            $reservation->who_pays = 'N/A';
+            $reservation->who_pays = $request->input('billCharge');
             //OUC NUMBER
-            $reservation->ouc = 'OUC_NUM';
+            $reservation->ouc = $request->input('OUC_Number');
             //PROJECT GRANT
-            $reservation->projgrant = 'PROJECT_GRANT';
+            $reservation->projgrant = $request->input('ProjectGrantNumber');
             //BookKeepr information (if any)
-            $reservation->bookkeeper = 'NONE';
+            $reservation->bookkeeper = $request->input('DepartmentalBookkeeper');
             //Terms and Conditions Agreed?
             $reservation->terms = $request->input('agree');
 
@@ -204,7 +216,11 @@ class ReservationController extends Controller {
                 'billingState'=>$request->input('billingState'),
                 'billingZipCode'=>$request->input('billingZipCode'),
                 'billingCountry'=>$request->input('billingCountry'),
-                'billingEMailAddress'=>$request->input('billingEMail')
+                'billingEMailAddress'=>$request->input('billingEMail'),
+                'billCharge'=>$request->input('billCharge'),
+                'OUCNumber'=>$request->input('OUC_Number'),
+                'ProjectGrantNumber'=>$request->input('ProjectGrantNumber'),
+                'BookKeeper'=>$request->input('DepartmentalBookkeeper')
             );
 
             //Get Information on where to send the e-mail message.
@@ -219,6 +235,7 @@ class ReservationController extends Controller {
            /* Mail::send('emails.notification_messages.confirmationMessage', $data, function($message) use ($GUEST_TO_INFORMATION)
             {
                 $message->to($GUEST_TO_INFORMATION['to'],$GUEST_TO_INFORMATION['fname'].','.$GUEST_TO_INFORMATION['lname']);
+                $message->subject('NCSU - CMAST Reservation Notice');
                 $message->from('test@example.com', 'NCSU Guest Services');
 
             });*/

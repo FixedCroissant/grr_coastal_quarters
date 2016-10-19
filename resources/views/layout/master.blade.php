@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{URL::asset('css/bootstrap.css')}}"/>
     <!--Favi Icon-->
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" >
-</head>\
+</head>
 
 <div class="container">
 <img class="img-responsive" src="{{URL::asset('img/uh_logo.png')}}"/>

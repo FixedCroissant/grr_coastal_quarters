@@ -171,6 +171,57 @@
                     {{$guestReservationDetails->host_phone}} <br/>
                 </td>
             </tr>
+            <tr style="border-bottom:1px solid black;" >
+                <td colspan="2">
+                    <h4>Billing Information</h4>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                   Who is responsible for billing:
+                </td>
+                <td class="small">
+                    {{$guestReservationDetails->who_pays}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    OUC Number:
+                    <br/>
+                    <span style="font-size: xx-small">(If Applicable)</span>
+                </td>
+                <td class="small">
+                    {{$guestReservationDetails->ouc}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Project/Grant Number:
+                    <br/>
+                    <span style="font-size: xx-small">(If Applicable)</span>
+                </td>
+                <td class="small">
+                    {{$guestReservationDetails->projgrant}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Bookkeeper Information:
+                    <br/>
+                    <span style="font-size: xx-small">(If Applicable)</span>
+                </td>
+                <td class="small">
+                    {{$guestReservationDetails->bookkeeper}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Agree to Terms:
+                </td>
+                <td class="small">
+                        {{$guestReservationDetails->terms}}
+                </td>
+            </tr>
             </table>
             </p>
         </div>

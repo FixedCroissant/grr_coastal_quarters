@@ -76,6 +76,37 @@
         });
 
 
+        //Handle if the person selects guest -- pre-fill the ouc/project-grant/and bookkeeper fields as needed
+        $(document).ready(function(){
+
+            //Handle the subsequent 3 fields if the user selects that the guest is responsible.
+            $("#guestResponsible").click(function(){
+                if($(this).prop("checked")){
+                    //Set OUC Number to N/A
+                    $('input[name="OUC_Number"]').val("N/A");
+                    //Set ProjectGrant Number to N/A
+                    $('input[name="ProjectGrantNumber"]').val("N/A");
+                    //Set Departmental Bookkeeper to N/A
+                    $('input[name="DepartmentalBookkeeper"]').val("N/A");
+                }
+            });
+
+            //Handle the subsequent 3 fields if the user selects that the department is responsible.
+            $("#departmentResponsible").click(function(){
+                if($(this).prop("checked")){
+                    //Remove all text elements from billing.
+                    //Stick OUC Number to Blank
+                    $('input[name="OUC_Number"]').val("Please provide value.");
+                    //Stick Project Grant to Blank
+                    $('input[name="ProjectGrantNumber"]').val("Please provide value.");
+                    //Stick Departmental Bookkeeper to Blank
+                    $('input[name="DepartmentalBookkeeper"]').val("");
+                }
+            });
+
+        });
+
+
 
     </script>
     <!--End Need for the Arrival and Departure Dates-->
@@ -600,10 +631,73 @@
                   &nbsp;
               </div>
           </div>
+          <div class="row border_bottom_header">
+              <h2>Payment Information</h2>
+          </div>
+          <div class="row">
+              <div class="col-md-12">
+                  &nbsp;
+              </div>
+          </div>
+          <!--Start Billing Information-->
+          <div class="row">
+              &nbsp;
+          </div>
+          <div class="row">
+              <label class="control-label col-sm-2 required">
+                  Who will be responsible for billing:
+              </label>
+              <div class="col-sm-4">
+
+                  {!! Form::radio('billCharge','Guest',false,array('class'=>'#','id'=>'guestResponsible')) !!}
+                  {!! Form::label('billCharge', 'Guest') !!}
+                  <br/>
+
+                  {!! Form::radio('billCharge','Department',false,array('class'=>'#','id'=>'departmentResponsible')) !!}
+                  {!! Form::label('billCharge', 'Department via IDT (Interdepartmental Transfer)') !!}
+              </div>
+          </div>
+          <div class="row">
+              &nbsp;
+          </div>
+          <!--OUC Number-->
+          <div class="row">
+              <label class="control-label col-sm-2">
+                  If you choose Department, please fill out these fields:
+              </label>
+              <div class="col-sm-5">
+                  {!! Form::label('OUC_Number', 'OUC Number#:', array('class' => '#'))  !!}
+                  {!! Form::text('OUC_Number',Input::old('OUC_Number'),array('class'=>'form-control','maxlength'=>'10')) !!}
+              </div>
+          </div>
+          <!--Project Grant Number-->
+          <div class="row">
+              <div class="col-sm-2">
+                  &nbsp;
+              </div>
+              <div class="col-sm-5">
+                  {!! Form::label('ProjectGrantNumber', 'Project/Grant#:', array('class' => '#'))  !!}
+                  {!! Form::text('ProjectGrantNumber',Input::old('ProjectGrantNumber'),array('class'=>'form-control','maxlength'=>'10')) !!}
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-sm-2">
+                  &nbsp;
+              </div>
+              <div class="col-sm-5">
+                  {!! Form::label('DepartmentalBookkeeper', 'Departmental Bookkeeper:', array('class' => '#'))  !!}
+                  {!! Form::text('DepartmentalBookkeeper',Input::old('DepartmentalBookkeeper'),array('class'=>'form-control','maxlength'=>'150')) !!}
+              </div>
+          </div>
+
+
+
+
+          <!--Additional Information Here-->
           <hr>
 
           <div class="row">
-              <label class="control-label col-sm-2 required">
+              <label class="control-label col-sm-2">
                   Please provide additional information about reservation here:
               </label>
               <div class="col-sm-5">

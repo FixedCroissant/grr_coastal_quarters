@@ -49,7 +49,7 @@ Temporary Items
 # ENV FILES
 .env
 .env.example
-
+.env_live
 # PHP Storm Files
 .idea
 
