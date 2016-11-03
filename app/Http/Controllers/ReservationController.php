@@ -87,6 +87,7 @@ class ReservationController extends Controller {
             'hostSTATE'=>'required',
             'hostZIP_CODE'=>'required',
             'hostPHONE_NUMBER'=>'required',
+            'hostPURPOSE_FOR_STAYING'=>'required',
             'hostEMAIL_ADDRESS'=>'required',
             'billCharge'=>'required',
             'agree'=>'required'
@@ -166,7 +167,8 @@ class ReservationController extends Controller {
             $reservation->host_email_address = $request->input('hostEMAIL_ADDRESS');
             //ADDITIONAL INFORMATION ABOUT THE RESERVATION POSTED HERE
             $reservation->additional_information_about_reservation=$request->input('additionalGuestInformation');
-
+            //HOST REASON FOR STAY
+            $reservation->reason_for_staying = $request->input('hostPURPOSE_FOR_STAYING');
             //WHO PAYS??
             $reservation->who_pays = $request->input('billCharge');
             //OUC NUMBER
@@ -325,7 +327,8 @@ class ReservationController extends Controller {
     public function updateChargesPOST($id){
         //Get the reservation id to update.
         $reservationToCharge = Reservation::findOrFail($id);
-
+        //How many guests in the system.
+        $guestsIndicated = $reservationToCharge->number_of_guests;
         //Get Days
         //needed for calculating room charges.
         $daysNeeded = Input::get('days');
@@ -334,10 +337,11 @@ class ReservationController extends Controller {
 
         //Start Calc
         //Rate of Rooms per day.
-        $rate = 40.00;
+        $rate = 35.00;
 
         //Total Room Charge
-        $roomCharge = ($daysNeeded*$rate);
+        //Total Room Charge is the rate ($35) per person/per night.
+        $roomCharge = ($daysNeeded*$guestsIndicated*$rate);
         //Total Additional Beds
         $additionalGuestCharge = ($daysNeeededForAdditionalRooms*$rate);
         //TOTAL CHARGE

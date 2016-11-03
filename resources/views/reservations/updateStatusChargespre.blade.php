@@ -44,7 +44,7 @@
     <div class="row">
         <div class="col-md-12">
            &nbsp;<p>
-            Please use this screen to generate a e-mail notifiying the guest of availability.
+            Please use this screen to generate a e-mail notifying the guest of availability.
             <br/>
             When the status is changed from "New" to "Pending Payment", they will be sent a e-mail in order to process payment.
 
@@ -104,10 +104,58 @@
                 </tr>
                 <tr>
                     <td>
+                        Total Guests Indicated:
+                    </td>
+                    <td>
+                        {{$reservations->number_of_guests}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Arrival Date:
+                    </td>
+                    <td>
+                        {{$reservations->arrival_date}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Departure Date:
+                    </td>
+                    <td>
+                        {{$reservations->departure_date}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Total Days
+                    </td>
+                    <td>
+                        <?php
+                        $arrival = new Carbon($reservations->arrival_date);
+                        $departure = new Carbon($reservations->departure_date);
+                        $difference = ($arrival->diff($departure)->days < 1)
+                            //IF NO DIFFERENCE
+                                ? 'No difference in days'
+                                : $arrival->diffInDays($departure);
+                        ?>
+                        {{$difference}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                       &nbsp;
+                    </td>
+                    <td>
+                        Please note that the room charges below are based on the total amount of guests indicated above.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         Room Charges
                     </td>
                     <td>
-                        {!! Form::number('days',$reservations->room_days) !!} days @ 40.00/day = {!! Form::number('totalRoomCharges',$reservations->roomcharge,array('placeholder'=>'Save to See Charge')) !!}
+                        {!! Form::number('days',$reservations->room_days) !!} days @ 35.00/night = {!! Form::number('totalRoomCharges',$reservations->roomcharge,array('placeholder'=>'Save to See Charge')) !!}
                     </td>
                 </tr>
                 <!--Additional Rooms-->
@@ -116,7 +164,7 @@
                         Additional Rooms(s)
                     </td>
                     <td>
-                        {!! Form::number('additionalRoomsDaysNeeded',$reservations->addguestdays) !!} days @ 40.00/day = {!! Form::number('totalAdditionalRoomCharges',$reservations->add_guest_charge,array('placeholder'=>'Save to See Charge')) !!}
+                        {!! Form::number('additionalRoomsDaysNeeded',$reservations->addguestdays) !!} days @ 35.00/night = {!! Form::number('totalAdditionalRoomCharges',$reservations->add_guest_charge,array('placeholder'=>'Save to See Charge')) !!}
                     </td>
                 </tr>
                 <!--End additional rooms-->

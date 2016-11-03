@@ -78,6 +78,9 @@
                         Total Days
                     </th>
                     <th>
+                        Total Guests Indicated
+                    </th>
+                    <th>
                         Total Charged
                     </th>
                     <th>
@@ -129,6 +132,9 @@
                                 : $arrival->diffInDays($departure);
                         ?>
                         {{$difference}}
+                    </td>
+                    <td>
+                        {{$myReservations->number_of_guests}}
                     </td>
                     <td>
                         {{$myReservations->total_charge}}

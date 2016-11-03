@@ -159,7 +159,6 @@
     <div class="row">
         &nbsp;
     </div>
-
     {!! Form::open(array('route' => 'reservation.store')) !!}
 
 
@@ -340,7 +339,7 @@
                   Address Line 2:
               </label>
               <div class="col-sm-5">
-                  {!!  Form::text('billingAddressLine002',Input::old('billingAddressLine002'),array('class'=>'form-control')) !!}
+                  {!!  Form::text('billingAddressLine002',Input::old('billingAddressLine002'),array('class'=>'form-control','placeholder'=>'Put N/A if does not apply.')) !!}
               </div>
           </div>
           <div class="row">
@@ -517,7 +516,7 @@
                   Host Address Line 2:
               </label>
               <div class="col-sm-5">
-                  {!!  Form::text('hostADDRESSLINE002',Input::old('hostADDRESSLINE002'),array('class'=>'form-control')) !!}
+                  {!!  Form::text('hostADDRESSLINE002',Input::old('hostADDRESSLINE002'),array('class'=>'form-control','placeholder'=>'Put N/A if does not apply.')) !!}
               </div>
           </div>
           <div class="row">
@@ -626,6 +625,18 @@
                  {!!  Form::text('hostEMAIL_ADDRESS',Input::old('hostEMAIL_ADDRESS'),array('class'=>'form-control','placeholder'=>'hostAffiliation@ncsu.edu')) !!}
               </div>
           </div>
+          <div class="row">
+              &nbsp;&nbsp;
+          </div>
+          <div class="row">
+              <label class="control-label col-sm-2 required">
+                  Purpose of Your Stay:
+              </label>
+              <div class="col-sm-5">
+                  {!!  Form::textarea('hostPURPOSE_FOR_STAYING',Input::old('hostREASON_FOR_STAYING'),array('class'=>'form-control','maxlength'=>'200','Placeholder'=>'Please no more than 200 charaters')) !!}
+              </div>
+          </div>
+
           <div class="row">
               <div class="col-md-12">
                   &nbsp;

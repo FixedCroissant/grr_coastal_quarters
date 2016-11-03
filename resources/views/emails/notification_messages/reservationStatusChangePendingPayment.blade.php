@@ -45,7 +45,7 @@ Your reservation charges are outlined below:
     <!--Room Charges-->
     <tr>
         <td>
-            Room Charges @ 40.00/Day
+            Room Charges @ 35.00/Night
         </td>
         <td>
             {{$roomCharge}}
@@ -68,7 +68,7 @@ Your reservation charges are outlined below:
     </tr>
     <tr>
         <td>
-            Additional Room Charge @ 40.00/Day
+            Additional Room Charge @ 35.00/Night
         </td>
         <td>
             {{$additionalGuestCharge}}
