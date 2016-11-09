@@ -374,6 +374,14 @@ class ReservationController extends Controller {
      * @param $id
      */
     public function updateStatusPOST($id){
+        //Combining two functions into one.
+        //Automatically run the updateChargesPOST function when the status is updated
+        //on the administrative side.
+        $this->updateChargesPOST($id);
+        //Done updating the charges for the reservation.
+
+
+
         //Get the reservation id to update
         $reservationToChange = Reservation::findOrFail($id);
 
@@ -412,8 +420,8 @@ class ReservationController extends Controller {
         //THIS HANDLES THE TO ADDRESS AND THE FIRST NAME & LAST NAME THAT IS SHOWN ON THE E_MAIL
         $GUEST_TO_INFORMATION = array(
             'to'=>$reservationInformation->billing_email_address,
-            'lname'=>$reservationInformation->billing_last_name,
-            'fname'=>$reservationInformation->billing_first_name
+            'lname'=>$reservationInformation->l_name,
+            'fname'=>$reservationInformation->f_name
         );
         //End E-Mail Information
 
@@ -425,9 +433,54 @@ class ReservationController extends Controller {
                             Mail::send('emails.notification_messages.reservationStatusChangePendingPayment', $data, function($message) use ($GUEST_TO_INFORMATION)
                             {
                                 $message->to($GUEST_TO_INFORMATION['to'],$GUEST_TO_INFORMATION['fname'].','.$GUEST_TO_INFORMATION['lname']);
-                                $message->subject('NCSU - CMAST Reservation Notice');
+                                $message->subject('Coastal Quarters Reservation Notice - Pending Payment');
                                 $message->from('guestservices@ncsu.edu', 'NCSU Guest Services');
                             });
+                    break;
+                    //Payment Received Status -- Send confirmation.
+                    case "PaymentReceived":
+                                //E-Mail message to send confirmation message payment rec'd.
+                                //Send e-mail message to the user.
+                                Mail::send('emails.notification_messages.reservationStatusChangePaymentReceived', $data, function($message) use ($GUEST_TO_INFORMATION)
+                                {
+                                    $message->to($GUEST_TO_INFORMATION['to'],$GUEST_TO_INFORMATION['fname'].','.$GUEST_TO_INFORMATION['lname']);
+                                    $message->subject('Coastal Quarters Reservation Notice - Confirmation -Payment Received');
+                                    $message->from('guestservices@ncsu.edu', 'NCSU Guest Services');
+                                });
+                    break;
+                    //Payment type is IDT
+                    case "IDT":
+                                //E-Mail message to guest about IDT payment.
+                                //Send e-mail message to the user.
+                                Mail::send('emails.notification_messages.reservationStatusChangeIDT', $data, function($message) use ($GUEST_TO_INFORMATION)
+                                {
+                                    $message->to($GUEST_TO_INFORMATION['to'],$GUEST_TO_INFORMATION['fname'].','.$GUEST_TO_INFORMATION['lname']);
+                                    $message->subject('Coastal Quarters Reservation Notice - Confirmation -IDT');
+                                    $message->from('guestservices@ncsu.edu', 'NCSU Guest Services');
+                                });
+                    break;
+                    //Send a email when the payment is cancelled.
+                    case "Cancelled":
+                                //E-Mail message to guest about Cancelled.
+                                //Send e-mail message to the user.
+                                Mail::send('emails.notification_messages.reservationStatusChangeCancelled', $data, function($message) use ($GUEST_TO_INFORMATION)
+                                {
+                                    $message->to($GUEST_TO_INFORMATION['to'],$GUEST_TO_INFORMATION['fname'].','.$GUEST_TO_INFORMATION['lname']);
+                                    $message->subject('Coastal Quarters Reservation Notice - Cancellation');
+                                    $message->from('guestservices@ncsu.edu', 'NCSU Guest Services');
+                                });
+                    break;
+
+                    //Send a m-mail send the payment is refunded.
+                    case "Refunded":
+                                //E-Mail message to guest about refunded.
+                                //Send e-mail message to the user.
+                                Mail::send('emails.notification_messages.reservationStatusChangeRefunded', $data, function($message) use ($GUEST_TO_INFORMATION)
+                                {
+                                    $message->to($GUEST_TO_INFORMATION['to'],$GUEST_TO_INFORMATION['fname'].','.$GUEST_TO_INFORMATION['lname']);
+                                    $message->subject('Coastal Quarters Reservation Notice - Refund Processing');
+                                    $message->from('guestservices@ncsu.edu', 'NCSU Guest Services');
+                                });
                     break;
 
                     //Rooms are full, there is no additional availability, send message.
@@ -437,7 +490,7 @@ class ReservationController extends Controller {
                         Mail::send('emails.notification_messages.reservationStatusChangeDenied', $data, function($message) use ($GUEST_TO_INFORMATION)
                         {
                             $message->to($GUEST_TO_INFORMATION['to'],$GUEST_TO_INFORMATION['fname'].','.$GUEST_TO_INFORMATION['lname']);
-                            $message->subject('NCSU - CMAST Reservation Notice');
+                            $message->subject('Coastal Quarters Reservation Notice - Reservation Denied');
                             $message->from('guestservices@ncsu.edu', 'NCSU Guest Services');
                         });
                     break;

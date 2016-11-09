@@ -57,23 +57,7 @@ Your reservation charges are outlined below:
             &nbsp;
         </td>
     </tr>
-    <!--Additional Room Charges If App-->
-    <tr>
-        <td>
-            Additional Rooms: (if any)
-        </td>
-        <td>
-            {{$additionalDaysIndicated}}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Additional Room Charge @ 35.00/Night
-        </td>
-        <td>
-            {{$additionalGuestCharge}}
-        </td>
-    </tr>
+
     <!--One Blank Rows-->
     <tr>
         <td>

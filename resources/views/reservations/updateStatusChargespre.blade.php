@@ -22,10 +22,45 @@
     }
 </style>
 
+<!--Runs at the bottom of the page-->
+@section('custom-scripts')
+<script>
+    $(document).ready(function(){
+        //Room Charge Total
+        var roomChargeTotal = $('#roomChargeTotal');
+        //Total Nights Provided by the User
+        var totalNightsIndicated = $('#totalNightsIndicated');
+        //Total Guests Indicated
+        var totalGuestsIndicated = $('#totalGuestsIndicated').val();
+        //Rate per night $35.00
+        var rate = 35;
+        //The Value that is saved night to GRAND TOTAL
+        var grandTotal_INPUT_VALUE = $('#grandTOTALTODISPLAY');
+
+
+        //When the Input Changes automatically calculate the value.
+        $(totalNightsIndicated).on('input', function() {
+            // do something
+            //Get value of total nights indicated
+            var totalNightsIndicatedVALUE = totalNightsIndicated.val();
+            //Calculate total
+            var totalCharge = totalNightsIndicatedVALUE*totalGuestsIndicated*rate;
+
+            //Assign the new value in the equal block.
+            roomChargeTotal.val(totalCharge);
+            //Update the value shown next to the "GRAND TOTAL" block.
+            //TWO DECIMAL PLACES
+            grandTotal_INPUT_VALUE.val(totalCharge+'.00');
+
+        });
+    });
+</script>
+@endsection
+
 
 <!--Main Heading of Page-->
     @section('contentheader_title')
-    Status Change & Payment Information for CMAST Reservations
+    Status Change & Payment Information for Coastal Quarters Reservations
     <br/>
     @stop
 <!--Description of Page-->
@@ -91,12 +126,14 @@
                         <h4>Cost Information</h4>
                     </td>
                 </tr>
-            {!! Form::open(array('route'=>array('reservation.updateChargesPOST',$reservations->id))) !!}
+                <!--Room Charges-->
+                <!--ROom Status Change-->
+            {!! Form::open(array('route'=>array('reservation.updateStatusPOST',$reservations->id))) !!}
             <!--Room Charges-->
                 <!--Note to user-->
                 <tr>
                     <td>
-                        <h5>Step 1: Set Room Charges</h5>
+                       &nbsp;
                     </td>
                     <td>
 
@@ -108,6 +145,7 @@
                     </td>
                     <td>
                         {{$reservations->number_of_guests}}
+                        {!!Form::hidden('number_of_guests',$reservations->number_of_guests,array('id'=>'totalGuestsIndicated'))  !!}
                     </td>
                 </tr>
                 <tr>
@@ -155,16 +193,7 @@
                         Room Charges
                     </td>
                     <td>
-                        {!! Form::number('days',$reservations->room_days) !!} days @ 35.00/night = {!! Form::number('totalRoomCharges',$reservations->roomcharge,array('placeholder'=>'Save to See Charge')) !!}
-                    </td>
-                </tr>
-                <!--Additional Rooms-->
-                <tr>
-                    <td>
-                        Additional Rooms(s)
-                    </td>
-                    <td>
-                        {!! Form::number('additionalRoomsDaysNeeded',$reservations->addguestdays) !!} days @ 35.00/night = {!! Form::number('totalAdditionalRoomCharges',$reservations->add_guest_charge,array('placeholder'=>'Save to See Charge')) !!}
+                        {!! Form::number('days',$reservations->room_days,array('class'=>'','id'=>'totalNightsIndicated')) !!} nights @ 35.00/night = {!! Form::number('totalRoomCharges',$reservations->roomcharge,array('placeholder'=>'Save to See Charge','id'=>'roomChargeTotal')) !!}
                     </td>
                 </tr>
                 <!--End additional rooms-->
@@ -175,14 +204,15 @@
                     </td>
                     <td>
                         <!--Show grand total number format with two-decimal places-->
-                        $ {!! number_format($reservations->total_charge,2) !!}
+
+                        ${!!Form::text('grand_total',number_format($reservations->total_charge,2),array('id'=>'grandTOTALTODISPLAY'))  !!}
+
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <!--Add save button-->
-                        {!! Form::submit('Save Room Charges',array('class'=>'btn btn-primary')) !!}
-                        {!! Form::close() !!}
+
+
                     </td>
                 </tr>
             <!--End Cost Information-->
@@ -194,15 +224,12 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <h5>Step 2: Change Status to Pending Payment</h5>
                         <br/>
                         <p>
                             If there is <STRONG>NO</STRONG> room available, ignore Step #1 and set status to "Denied" and they will be notified via e-mail that no room is available.
                         </p>
                     </td>
                 </tr>
-                <!--Room Charges-->
-                {!! Form::open(array('route'=>array('reservation.updateStatusPOST',$reservations->id))) !!}
                 <tr>
                     <td>
                         Current Reservation Status
@@ -212,7 +239,11 @@
                         $statusValues = array(
                                 'New'=>'New',
                                 'PendingPmt'=>'Pending Payment',
-                                'Denied'=>'Denied'
+                                'PaymentReceived'=>'PaymentReceived',
+                                'Denied'=>'Denied',
+                                'IDT'=>'IDT',
+                                'Cancelled'=>'Cancelled',
+                                'Refunded'=>'Refunded'
                         );
                         ?>
 

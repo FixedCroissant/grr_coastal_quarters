@@ -4,7 +4,6 @@
 *******************DO NOT REPLY TO THIS EMAIL ADDRESS ********************************
 <br/>
 <br/>
-
 Dear {{$guestFirstName}},
 <br/>
 <br/>
@@ -16,7 +15,8 @@ Thank you for wanting to stay with us at Coastal Quarters.
 <br/>
 <br/>
 <p>
-Unfortunately, we do not have guest room availability within Coastal Quarters for your requested dates, {{$arrivalDate}} to {{$departureDate}}. We apologize for any inconvenience. Please be sure to think of us for future visits.
+Your reservation at Coastal Quarters for your requested dates, {{$arrivalDate}} to {{$departureDate}} has been cancelled. <br/>
+<br/>
 </p>
 <hr>
 <br>

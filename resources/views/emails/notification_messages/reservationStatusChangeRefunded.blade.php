@@ -4,7 +4,6 @@
 *******************DO NOT REPLY TO THIS EMAIL ADDRESS ********************************
 <br/>
 <br/>
-
 Dear {{$guestFirstName}},
 <br/>
 <br/>
@@ -13,10 +12,12 @@ Thank you for wanting to stay with us at Coastal Quarters.
 <br/>
 <br/>
 <br/>
-<br/>
-<br/>
 <p>
-Unfortunately, we do not have guest room availability within Coastal Quarters for your requested dates, {{$arrivalDate}} to {{$departureDate}}. We apologize for any inconvenience. Please be sure to think of us for future visits.
+Your payment for your reservation through the following dates, {{$arrivalDate}} to {{$departureDate}} at Coastal Quarters is in the process of being refunded. <br/>
+<br/>
+It may take 2-3 business days for the payment to show up back on your bank account.
+<br/>
+<br/>
 </p>
 <hr>
 <br>
