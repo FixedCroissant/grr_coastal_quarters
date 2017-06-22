@@ -242,6 +242,19 @@ class ReservationController extends Controller {
 
             });*/
 
+
+           //Send message to University Official
+            Mail::send('emails.notification_messages.cmast_nc_state_notification_message', $data, function($message) use ($GUEST_TO_INFORMATION)
+           {
+               //Set email notice to first person
+               $message->to("emailaddress","LastName, FirstName");
+               //CC Me.
+               $message->cc("jjwill10@ncsu.edu","Williams,Joshua");
+               $message->subject('NCSU - CMAST Reservation Notice');
+               $message->from('do_not_reply@ncsu.com', 'NCSU Guest Services');
+
+           });
+
             //Notify the person that it successfully went through.
             //Go To View
             return \View::make('reservations.confirm_message')->with('guestReservationDetails',$reservation);
