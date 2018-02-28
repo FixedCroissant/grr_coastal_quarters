@@ -1,4 +1,5 @@
-@extends('app')
+@extends('layout.app')
+<!--Layout.Master Front Page-->
 @section('main-content')
 
 
@@ -18,7 +19,17 @@
 <!--End Description of Page-->
     <br/>
     <br/>
-    <!--Messages Page-->
+    <!--Add any Script-->
+    @section('custom-scripts')
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+    <script>
+        $(document).ready(function() {
+            $('#reservationList').DataTable();
+        } );
+    </script>
+    @endsection
+<!--Messages Page-->
     <div class="row">
         @if(Session::has('message'))
             <p class="alert alert-info">{{ Session::get('message') }}</p>
@@ -41,7 +52,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-           &nbsp;
+
         </div>
     </div>
     <div class="row">
@@ -52,7 +63,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-condensed">
+            <table class="table table-condensed" id="reservationList">
             <thead>
             <tr>
                     <th>

@@ -1,3 +1,4 @@
+<!--Only use below layout for front page-->
 @extends('layout.master')
 
 @section('content')
@@ -104,6 +105,21 @@
                 }
             });
 
+        });
+        //Handle The amount of rooms to choose based on the total amount of guests indicated.
+        $(document).ready(function() {
+            $('#totalGuests').change(function(){
+                var totalNumberOfGuests = $('#totalGuests').find(":selected").val();
+                //Value of total rooms.
+                var totalRooms = $('#totalRooms');
+               //If guests are greater than 2.
+                if (totalNumberOfGuests >2 ){
+                    $(totalRooms).val("2");
+                    }
+                    else{
+                    $(totalRooms).val("1");
+                    }
+            });
         });
 
 
@@ -269,10 +285,21 @@
               </label>
               <div class="col-sm-5">
 
-                    {!! Form::selectRange('totalGUESTS_INDICATED',1,20,array('class'=>'form-control')) !!}
+                    {!! Form::selectRange('totalGUESTS_INDICATED',1,20,null,array('class'=>'form-control','id'=>'totalGuests')) !!}
 
               </div>
           </div>
+          <div class="row">
+              <label class="control-label col-sm-2 required">
+                  Total Rooms:<br/>
+                  <span style="font-size:xx-small;">The amount of rooms provided is based on the amount of people indicated.</span>
+              </label>
+              <div class="col-sm-5">
+                  {!! Form::selectRange('totalROOMS_INDICATED',1,2,null,array('class'=>'form-control','id'=>'totalRooms','disabled'=>true)) !!}
+
+              </div>
+          </div>
+
 
 
 

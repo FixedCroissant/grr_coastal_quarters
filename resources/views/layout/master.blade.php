@@ -1,3 +1,4 @@
+<!--This is the layout used for front facing area-->
 <html>
 <head>
     <title>Coastal Quarters Guest Reservation System</title>
@@ -11,14 +12,14 @@
     <link rel="stylesheet" href="{{URL::asset('css/bootstrap.css')}}"/>
     <!--Favi Icon-->
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" >
+    <!--Set Character Set-->
+    <meta charset="UTF-8">
 </head>
 
 <div class="container">
 <img class="img-responsive" src="{{URL::asset('img/uh_logo.png')}}"/>
 
 @yield('content')
-
-
 
 
 <!--Add Footer to all the pages-->

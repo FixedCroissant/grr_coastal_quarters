@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\CustomRate;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -77,6 +78,8 @@ class ReservationController extends Controller {
             'billingCountry'=>'required',
             'guestarrivalDate'=>'required',
             'guestdepartureDate'=>'required',
+            'totalGUESTS_INDICATED'=>'required',
+            'totalROOMS_INDICATED'=>'required',
             'hostfirstNAME'=>'required',
             'hostlastNAME'=>'required',
             'hostTITLE'=>'required',
@@ -119,6 +122,7 @@ class ReservationController extends Controller {
             $reservation->arrival_date = $request->input('guestarrivalDate');
             //Guest Departure Date
             $reservation->departure_date = $request->input('guestdepartureDate');
+            //Total Guests:
             //Guest Number of Guests Indicated
             $reservation->number_of_guests=$request->input('totalGUESTS_INDICATED');
             //Billing Information
@@ -169,6 +173,9 @@ class ReservationController extends Controller {
             $reservation->additional_information_about_reservation=$request->input('additionalGuestInformation');
             //HOST REASON FOR STAY
             $reservation->reason_for_staying = $request->input('hostPURPOSE_FOR_STAYING');
+            $reservation->total_number_guests = $request->input('totalGUESTS_INDICATED');
+            //Indicated Amount of Total Rooms they need to stay.
+            $reservation->number_of_rooms = $request->input('totalROOMS_INDICATED');
             //WHO PAYS??
             $reservation->who_pays = $request->input('billCharge');
             //OUC NUMBER
@@ -244,7 +251,7 @@ class ReservationController extends Controller {
 
 
            //Send message to University Official
-            Mail::send('emails.notification_messages.cmast_nc_state_notification_message', $data, function($message) use ($GUEST_TO_INFORMATION)
+            /*Mail::send('emails.notification_messages.cmast_nc_state_notification_message', $data, function($message) use ($GUEST_TO_INFORMATION)
            {
                //Set email notice to first person
                $message->to("emailaddress","LastName, FirstName");
@@ -253,7 +260,7 @@ class ReservationController extends Controller {
                $message->subject('NCSU - CMAST Reservation Notice');
                $message->from('do_not_reply@ncsu.com', 'NCSU Guest Services');
 
-           });
+           });*/
 
             //Notify the person that it successfully went through.
             //Go To View
@@ -304,9 +311,6 @@ class ReservationController extends Controller {
         $foundReservation->fill(Input::all())->save();
 
         return Redirect::back()->with('message','Reservation Saved!');
-
-
-
 	}
 
 	/**
@@ -332,9 +336,12 @@ class ReservationController extends Controller {
         //Get Reservation information
         //Update the reservation as needed.
         $reservation = Reservation::findOrFail($id);
+        //Get Custom Rate Set up In the Admin Portion of th page.
+        //Only get one custom rate -- as only one needs to be active at a time.
+        $customRate = CustomRate::where('rate_active','Y')->select('rate_amount')->orderBy('created_at','ASC')->first();
 
 	    //Go to the view to update charges for the specified id.
-	    return view('reservations.updateStatusChargespre')->with('reservations',$reservation);
+	    return view('reservations.updateStatusChargespre')->with(array('reservations'=>$reservation,'customRate'=>$customRate));
     }
     /**Allow for the update of charges and cost information**/
     public function updateChargesPOST($id){
@@ -345,8 +352,17 @@ class ReservationController extends Controller {
         //Get Days
         //needed for calculating room charges.
         $daysNeeded = Input::get('days');
+        //amount of rooms indicated
+        $roomsNeeded = Input::get('roomsNeeded');
         //Get additoinal rooms -- days needed
         $daysNeeededForAdditionalRooms = Input::get('additionalRoomsDaysNeeded');
+
+        //handle the charge based on the radio button.
+        //Get radio button.
+        $charge_type_selected = Input::get('rate_option');
+
+
+        return  dd($charge_type_selected);
 
         //Start Calc
         //Rate of Rooms per day.
@@ -520,7 +536,4 @@ class ReservationController extends Controller {
     return Redirect::back()->with('message','Reservation Status updated and E-Mail Sent to Billing E-Mail.');
 
     }
-
-
-
 }

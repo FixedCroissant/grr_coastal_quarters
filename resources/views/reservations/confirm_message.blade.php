@@ -1,3 +1,4 @@
+<!--Front Facing Layout-->
 @extends('layout.master')
 @section('content')
     <div class="row">

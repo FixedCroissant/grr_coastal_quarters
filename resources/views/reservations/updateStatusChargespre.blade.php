@@ -1,4 +1,4 @@
-@extends('app')
+@extends('layout.app')
 
 @section('main-content')
 @section('htmlheader_title')
@@ -20,31 +20,97 @@
     .light_red{
         background-color:#ff6666;
     }
+    .custom-rate{
+        border:1px solid black;
+        background-color: yellow;
+    }
+    .none{
+        display:none;
+    }
 </style>
 
 <!--Runs at the bottom of the page-->
 @section('custom-scripts')
 <script>
     $(document).ready(function(){
+        //Rate Set
+        var rate = null;
+
+        //START
+        $('.rate_options').change(function (){
+            //Handle different radio buttons selected.
+            //working
+            //alert('you changed the rate format.');
+
+            //Get Total Number of Rooms Indicated By The User on the front page.
+            var indicatedNumberOfRooms = $('#totalNumberOfRoomsIndicated').text().valueOf();
+            var indicatedNumberOfGuests = $('#totalGuestsIndicated').text().valueOf();
+
+            //Check radio button.
+            //Workings
+            //Less Than or Equal Four Nights
+            if($('#under_or_at_four_nights').is(":checked")){
+                //alert('You selected under or at four nights.');
+                rate = 125*indicatedNumberOfRooms;
+                //Set The Rate on the Front.
+                $('#rateShownOnPage').text('$125/night per unit/room');
+                //Hide Custom Rate Info box.
+                $('#custom-rate-infobox').hide();
+            }
+            //Greater Than Four Nights
+            else if($('#greater_than_four_nights').is(":checked")){
+                rate = 35*indicatedNumberOfGuests;
+                //Set The Rate on the Front.
+                $('#rateShownOnPage').text('$35/night per person');
+                //Hide Custom Rate Info box.
+                $('#custom-rate-infobox').hide();
+
+            }
+            //Set Custom Rate
+            else{
+                //alert('you want to be able to achieve a custom rate, dont you?');
+                //Show the current custom rate now.
+                $('#custom-rate-infobox').show();
+                rate = $('#custom-rate-amount').text().valueOf();
+
+            }
+
+
+
+            //rateShownOnPage
+            // $('#rateShownOnPage').text('newRate here');
+        });
+        //END
+
+
         //Room Charge Total
         var roomChargeTotal = $('#roomChargeTotal');
         //Total Nights Provided by the User
         var totalNightsIndicated = $('#totalNightsIndicated');
         //Total Guests Indicated
         var totalGuestsIndicated = $('#totalGuestsIndicated').val();
-        //Rate per night $35.00
-        var rate = 35;
+        //Standard Rate per night $35.00
+        //var rate = 35;
         //The Value that is saved night to GRAND TOTAL
         var grandTotal_INPUT_VALUE = $('#grandTOTALTODISPLAY');
 
 
         //When the Input Changes automatically calculate the value.
         $(totalNightsIndicated).on('input', function() {
+
+            //Check if radio button is selected for a rate.
+            //if($('#under_or_at_four_nights').not(":checked")||$('#greater_than_four_nights').not(":checked")||$('#custom_rate').not(":checked")){
+                    //alert('Please select a rate amount before you start, it appears none are selected.');
+            //}
+            //End
+
             // do something
             //Get value of total nights indicated
             var totalNightsIndicatedVALUE = totalNightsIndicated.val();
             //Calculate total
-            var totalCharge = totalNightsIndicatedVALUE*totalGuestsIndicated*rate;
+            //var totalCharge = totalNightsIndicatedVALUE*totalGuestsIndicated*rate;
+
+            var totalCharge = totalNightsIndicatedVALUE*rate;
 
             //Assign the new value in the equal block.
             roomChargeTotal.val(totalCharge);
@@ -182,6 +248,31 @@
                 </tr>
                 <tr>
                     <td>
+                        Total Units/Rooms
+                    </td>
+                    <td>
+                        <span id="totalNumberOfRoomsIndicated">{{$reservations->number_of_rooms}}</span>
+                    </td>
+                </tr>
+                <tr class="rate-important">
+                    <td>
+                        On this cost calculation, what charge would you like to use?
+                    </td>
+                    <td>
+                        {!! Form::radio('rate_option','under_or_at_four_nights',null,array('id'=>'under_or_at_four_nights','class'=>'rate_options')) !!}  Under or at 4 nights ($125/night <strong>per</strong> unit.)
+                        <br/>
+                        {!! Form::radio('rate_option','greater_than_four_nights',null,array('id'=>'greater_than_four_nights','class'=>'rate_options')) !!}  Greater than 4 nights ($35/night <strong>per</strong> person.)
+                        <br/>
+                        {!! Form::radio('rate_option','custom_rate',null, array('id'=>'custom_rate','class'=>'rate_options')) !!}  <strong>Custom</strong> Rate Charge, (must be set in the sidebar).
+                        <br/>
+                        <span id='custom-rate-infobox' class="custom-rate none">Current Custom Active Rate: <span id="custom-rate-amount">{{$customRate->rate_amount}}</span> </span>
+                        <br/>
+                        {!! link_to_route('customRate.index','Change Custom Rate') !!}
+                        <br/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                        &nbsp;
                     </td>
                     <td>
@@ -193,7 +284,7 @@
                         Room Charges
                     </td>
                     <td>
-                        {!! Form::number('days',$reservations->room_days,array('class'=>'','id'=>'totalNightsIndicated')) !!} nights @ 35.00/night = {!! Form::number('totalRoomCharges',$reservations->roomcharge,array('placeholder'=>'Save to See Charge','id'=>'roomChargeTotal')) !!}
+                        {!! Form::number('days',$reservations->room_days,array('class'=>'','id'=>'totalNightsIndicated')) !!} nights @ <span style="font-weight:bold;" id="rateShownOnPage">35.00/night</span> = {!! Form::number('totalRoomCharges',$reservations->roomcharge,array('placeholder'=>'Save to See Charge','id'=>'roomChargeTotal')) !!}
                     </td>
                 </tr>
                 <!--End additional rooms-->

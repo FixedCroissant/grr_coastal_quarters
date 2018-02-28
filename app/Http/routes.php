@@ -33,5 +33,7 @@ Route::post('reservation/{id}/status',['as'=>'reservation.updateStatusPOST','use
 Route::resource('reservation','ReservationController');
 //Create RESTful controller for users
 Route::resource('users','UsersController');
+//Create RESTful controller for a custom rate
+Route::resource('customRate','CustomRateController');
 
 
