@@ -1,5 +1,4 @@
 @extends('layout.master')
-
 @section('content')
     <!--Needed for Date Picker for the Arrival and Departure Dates-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
@@ -48,8 +47,6 @@
                 var guestLastName      =$('input[name="lastNAME"]').val();
                 var guestEmailAddress  =$('input[name="guestEMail"]').val();
 
-
-
                 if($(this).prop("checked") == true){
                     //Stick Guest First Name as Billing First Name
                     $('input[name="billingFirst_NAME"]').val(guestFirstName);
@@ -57,9 +54,7 @@
                     $('input[name="billingLast_NAME"]').val(guestLastName);
                     //Stick guest e-mail address as billing e-mail address
                     $('input[name="billingEMail"]').val(guestEmailAddress);
-
                 }
-
                 else if($(this).prop("checked") == false){
                     //Remove all text elements from billing.
                     //Stick Guest First Name as Billing First Name
@@ -70,7 +65,6 @@
                     $('input[name="billingEMail"]').val("");
 
                 }
-
             });
 
         });
@@ -78,7 +72,6 @@
 
         //Handle if the person selects guest -- pre-fill the ouc/project-grant/and bookkeeper fields as needed
         $(document).ready(function(){
-
             //Handle the subsequent 3 fields if the user selects that the guest is responsible.
             $("#guestResponsible").click(function(){
                 if($(this).prop("checked")){
@@ -86,8 +79,10 @@
                     $('input[name="OUC_Number"]').val("N/A");
                     //Set ProjectGrant Number to N/A
                     $('input[name="ProjectGrantNumber"]').val("N/A");
-                    //Set Departmental Bookkeeper to N/A
+                    //Set Departmental Bookkeeper Name to N/A
                     $('input[name="DepartmentalBookkeeper"]').val("N/A");
+					//Set Departmental BOokkeeper Phone to N/A.
+					 $('input[name="DepartmentalBookkeeperPhone"]').val("N/A");
                 }
             });
 
@@ -99,15 +94,14 @@
                     $('input[name="OUC_Number"]').val("Please provide value.");
                     //Stick Project Grant to Blank
                     $('input[name="ProjectGrantNumber"]').val("Please provide value.");
-                    //Stick Departmental Bookkeeper to Blank
-                    $('input[name="DepartmentalBookkeeper"]').val("");
+                    //Stick Departmental Bookkeeper Name to Please Provide Value.
+                    $('input[name="DepartmentalBookkeeper"]').val("Please provide value.");
+					//Set Departmental BOokkeeper Phone Number to Please Provide Value
+					 $('input[name="DepartmentalBookkeeperPhone"]').val("Provide Value");
+					
                 }
             });
-
         });
-
-
-
     </script>
     <!--End Need for the Arrival and Departure Dates-->
     <div class="row">
@@ -130,7 +124,6 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-
             <p>
                 This is a request for a guest room. There is no guarantee that a room will be available on the date(s) you desire. <br/>
                 If space is available for that time, you will be sent an email with a link to pay online. <br/>
@@ -139,6 +132,9 @@
                 <br/>
                 <br/>
                 Required fields are marked with an asterisk (*) and must be filled out before the form can be submitted.
+				<br/>
+				<br/>
+				<strong>"Minimum five (5) night consecutive stay required." </strong>
             </p>
         </div>
     </div>
@@ -154,14 +150,12 @@
         <div class="col-md-12 border_bottom_header">
             <h2>Guest Information</h2>
         </div>
-    </div>
+    </div>	
     <!--Blank Row-->
     <div class="row">
         &nbsp;
-    </div>
-    {!! Form::open(array('route' => 'reservation.store')) !!}
-
-
+    </div>	
+    {!! Form::open(array('route' => 'reservation.store','method'=>'POST')) !!}	
     <!--Messages Page-->
     <div class="row">
         @if(Session::has('message'))
@@ -212,7 +206,6 @@
                       {!! Form::text('lastNAME',Input::old('lastNAME'),array('class'=>'form-control')) !!}
                   </div>
           </div>
-
           <div class="row">
               &nbsp;
           </div>
@@ -238,7 +231,6 @@
           <div class="row">
               &nbsp;
           </div>
-
           <div class="row">
               <label class="control-label col-sm-2 required">
                   Arrival Date:
@@ -268,15 +260,9 @@
                   <span style="font-size:xx-small;">Please include yourself</span>
               </label>
               <div class="col-sm-5">
-
                     {!! Form::selectRange('totalGUESTS_INDICATED',1,20,array('class'=>'form-control')) !!}
-
               </div>
           </div>
-
-
-
-
           <div class="row border_bottom_header">
               <h2>Billing Information</h2>
           </div>
@@ -294,7 +280,7 @@
               <div class="col-sm-4" style="border:1px solid lightgrey;">
                    {!!  Form::checkbox('billingSameAsGuest',null)  !!}
                   Billing Information is the same as <br/>
-                  Guest Information Above.
+                  guest information above.
               </div>
           </div>
           <div class="row">
@@ -339,7 +325,7 @@
                   Address Line 2:
               </label>
               <div class="col-sm-5">
-                  {!!  Form::text('billingAddressLine002',Input::old('billingAddressLine002'),array('class'=>'form-control','placeholder'=>'Put N/A if does not apply.')) !!}
+                  {!!  Form::text('billingAddressLine002',Input::old('billingAddressLine002'),array('class'=>'form-control','placeholder'=>'Please put N/A if does not apply.')) !!}
               </div>
           </div>
           <div class="row">
@@ -413,7 +399,6 @@
                       <option value="WI">Wisconsin</option>
                       <option value="WY">Wyoming</option>
                   </select>
-
               </div>
           </div>
           <div class="row">
@@ -432,10 +417,247 @@
           </div>
           <div class="row">
               <label class="control-label col-sm-2 required">
-                 Country (If Not US):
+                 Country:
               </label>
-              <div class="col-sm-5">
-                  {!!  Form::text('billingCountry',Input::old('billingCountry'),array('class'=>'form-control')) !!}
+              <div class="col-sm-5">                 
+				  {!! Form::select('billingCountry', array(
+						''=>'Select ...',
+						'AF'=>'AFGHANISTAN',
+						'AL' => 'ALBANIA',
+						'DZ' => 'ALGERIA',
+						'AS' => 'AMERICAN SAMOA',
+						'AD' => 'ANDORRA',
+						'AO' => 'ANGOLA',
+						'AI' => 'ANGUILLA',
+						'AQ' => 'ANTARCTICA',
+						'AG' => 'ANTIGUA AND BARBUDA',
+						'AR' => 'ARGENTINA',
+						'AM' => 'ARMENIA',
+						'AW' => 'ARUBA',
+						'AU' => 'AUSTRALIA',
+						'AT' => 'AUSTRIA',
+						'AZ' => 'AZERBAIJAN',
+						'BS' => 'BAHAMAS',
+						'BH' => 'BAHRAIN',
+						'BD' => 'BANGLADESH',
+						'BB' => 'BARBADOS',
+						'BY' => 'BELARUS',
+						'BE' => 'BELGIUM',
+						'BZ' => 'BELIZE',
+						'BJ' => 'BENIN',
+						'BM' => 'BERMUDA',
+						'BT' => 'BHUTAN',
+						'BO' =>'BOLIVIA',
+						'BA' => 'BOSNIA AND HERZEGOVINA',
+						'BW' => 'BOTSWANA',
+						'BV' => 'BOUVET ISLAND',
+						'BR' => 'BRAZIL',
+						'IO' => 'BRITISH INDIAN OCEAN TERRITORY',
+						'BN' => 'BRUNEI DARUSSALAM',
+						'BG' => 'BULGARIA',
+						'BF' => 'BURKINA FASO',
+						'BI' => 'BURUNDI',
+						'KH' => 'CAMBODIA',
+						'CM' => 'CAMEROON',
+						'CA' => 'CANADA',
+						'CV' => 'CAPE VERDE',
+						'KY' => 'CAYMAN ISLANDS',
+						'CF' => 'CENTRAL AFRICAN REPUBLIC',
+						'TD' => 'CHAD',
+						'CL' => 'CHILE',
+						'CN' =>'CHINA',
+						'CX' =>'CHRISTMAS ISLAND',
+						'CC' => 'COCOS (KEELING) ISLANDS',
+						'CO' => 'COLOMBIA',
+						'KM' => 'COMOROS',
+						'CG' => 'CONGO',
+						'CD' => 'CONGO - THE DEMOCRATIC REPUBLIC OF',
+						'CK' => 'COOK ISLANDS',
+						'CR' => 'COSTA RICA',
+						'CI' => 'CÔTE DIVOIRE',
+						'HR' => 'CROATIA',
+						'CU' => 'CUBA',
+						'CY' => 'CYPRUS',
+						'CZ' => 'CZECH REPUBLIC',
+						'DK' => 'DENMARK',
+						'DJ' => 'DJIBOUTI',
+						'DM' => 'DOMINICA',
+						'DO' => 'DOMINICAN REPUBLIC',
+						'EC' => 'ECUADOR',
+						'EG' => 'EGYPT',
+						'SV' => 'EL SALVADOR',
+						'GQ' => 'EQUATORIAL GUINEA',
+						'ER' => 'ERITREA',
+						'EE' => 'ESTONIA',
+						'ET' => 'ETHIOPIA',
+						'FK' => 'FALKLAND ISLANDS',
+						'FO' => 'FAROE ISLANDS',
+						'FJ' => 'FIJI',
+						'FI' => 'FINLAND',
+						'FR' => 'FRANCE',
+						'GF' => 'FRENCH GUIANA',
+						'PF' => 'FRENCH POLYNESIA',
+						'TF' => 'FRENCH SOUTHERN TERRITORIES',
+						'GA' => 'GABON',
+						'GM' => 'GAMBIA',
+						'GE' => 'GEORGIA',
+						'DE' => 'GERMANY',
+						'GH' => 'GHANA',
+						'GI' => 'GIBRALTAR',
+						'GR' => 'GREECE',
+						'GL' => 'GREENLAND',
+						'GD' => 'GRENADA',
+						'GP' => 'GUADELOUPE',
+						'GU' => 'GUAM',
+						'GT' => 'GUATEMALA',
+						'GN' => 'GUINEA',
+						'GW' => 'GUINEA-BISSAU',
+						'GY' => 'GUYANA',
+						'HT' => 'HAITI',
+						'HM' => 'HEARD ISLAND AND MCDONALD ISLANDS',
+						'HN' => 'HONDURAS',
+						'HK' => 'HONG KONG',
+						'HU' => 'HUNGARY',
+						'IS' => 'ICELAND',
+						'IN' => 'INDIA',
+						'ID' => 'INDONESIA',
+						'IR' => 'IRAN, ISLAMIC REPUBLIC OF',
+						'IQ' => 'IRAQ',
+						'IE' => 'IRELAND',
+						'IL' => 'ISRAEL',
+						'IT' => 'ITALY',
+						'JM' => 'JAMAICA',
+						'JP' => 'JAPAN',
+						'JO' => 'JORDAN',
+						'KZ' => 'KAZAKHSTAN',
+						'KE' => 'KENYA',
+						'KI' => 'KIRIBATI',
+						'KP' => 'KOREA, DEMOCRATIC PEOPLES REPUBLIC OF',
+						'KR' => 'KOREA, REPUBLIC OF',
+						'KW' => 'KUWAIT',
+						'KG' => 'KYRGYZSTAN',
+						'LA' => 'LAO PEOPLES DEMOCRATIC REPUBLIC',
+						'LV' => 'LATVIA',
+						'LB' => 'LEBANON',
+						'LS' => 'LESOTHO',
+						'LR' => 'LIBERIA',
+						'LY' => 'LIBYAN ARAB JAMAHIRIYA',
+						'LI' => 'LIECHTENSTEIN',
+						'LT' => 'LITHUANIA',
+						'LU' => 'LUXEMBOURG',
+						'MO' => 'MACAO',
+						'MK' => 'MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF',
+						'MG' => 'MADAGASCAR',
+						'MW' => 'MALAWI',
+						'MY' => 'MALAYSIA',
+						'MV' => 'MALDIVES',
+						'ML' => 'MALI',
+						'MT' => 'MALTA',
+						'MH' => 'MARSHALL ISLANDS',
+						'MQ' => 'MARTINIQUE',
+						'MR' => 'MAURITANIA',
+						'MU' => 'MAURITIUS',
+						'YT' => 'MAYOTTE',
+						'MX' => 'MEXICO',
+						'FM' => 'MICRONESIA, FEDERATED STATES OF',
+						'MD' => 'MOLDOVA, REPUBLIC OF',
+						'MC' => 'MONACO',
+						'MN' => 'MONGOLIA',
+						'MS' => 'MONTSERRAT',
+						'MA' => 'MOROCCO',
+						'MZ' => 'MOZAMBIQUE',
+						'MM' => 'MYANMAR',
+						'NA' => 'NAMIBIA',
+						'NR' => 'NAURU',
+						'NP' => 'NEPAL',
+						'NL' => 'NETHERLANDS',
+						'AN' => 'NETHERLANDS ANTILLES',
+						'NC' => 'NEW CALEDONIA',
+						'NZ' => 'NEW ZEALAND',
+						'NI' => 'NICARAGUA',
+						'NE' => 'NIGER',
+						'NG' => 'NIGERIA',
+						'NU' => 'NIUE',
+						'NF' => 'NORFOLK ISLAND',
+						'MP' => 'NORTHERN MARIANA ISLANDS',
+						'NO' => 'NORWAY',
+						'OM' => 'OMAN',
+						'PK' => 'PAKISTAN',
+						'PW' => 'PALAU',
+						'PS' => 'PALESTINIAN TERRITORY OCCUPIED',
+						'PA' => 'PANAMA',
+						'PG' => 'PAPUA NEW GUINEA',
+						'PY' => 'PARAGUAY',
+						'PE' => 'PERU',
+						'PH' => 'PHILIPPINES',
+						'PN' => 'PITCAIRN',
+						'PL' => 'POLAND',
+						'PT' => 'PORTUGAL',
+						'PR' => 'PUERTO RICO',
+						'QA' => 'QATAR',
+						'RE' => 'RÉUNION',
+						'RO' => 'ROMANIA',
+						'RU' => 'RUSSIAN FEDERATION',
+						'RW' => 'RWANDA',
+						'SH' => 'SAINT HELENA',
+						'KN' => 'SAINT KITTS AND NEVIS',
+						'LC' => 'SAINT LUCIA',
+						'PM' => 'SAINT PIERRE AND MIQUELON',
+						'VC' => 'SAINT VINCENT AND THE GRENADINES',
+						'WS' => 'SAMOA',
+						'SM' => 'SAN MARINO',
+						'ST' => 'SAO TOME AND PRINCIPE',
+						'SA' => 'SAUDI ARABIA',
+						'SN' => 'SENEGAL',
+						'CS' => 'SERBIA AND MONTENEGRO',
+						'SC' => 'SEYCHELLES',
+						'SL' => 'SIERRA LEONE',
+						'SG' => 'SINGAPORE',
+						'SK' => 'SLOVAKIA',
+						'SI' => 'SLOVENIA',
+						'SB' => 'SOLOMON ISLANDS',
+						'SO' => 'SOMALIA',
+						'ZA' => 'SOUTH AFRICA',
+						'ES' => 'SPAIN',
+						'LK' => 'SRI LANKA',
+						'SD' => 'SUDAN',
+						'SR' => 'URINAME',
+						'SJ' => 'SVALBARD AND JAN MAYEN',
+						'SZ' => 'SWAZILAND',
+						'SE' => 'SWEDEN',
+						'CH' => 'SWITZERLAND',
+						'SY' => 'SYRIAN ARAB REPUBLIC',
+						'TW' => 'TAIWAN, PROVINCE OF CHINA',
+						'TJ' => 'TAJIKISTAN',
+						'TZ' => 'TANZANIA, UNITED REPUBLIC OF',
+						'TH' => 'THAILAND',
+						'TL' => 'TIMOR-LESTE',
+						'TG' => 'TOGO',
+						'TK' => 'TOKELAU',
+						'TO' => 'TONGA',
+						'TT' => 'TRINIDAD AND TOBAGO',
+						'TN' => 'TUNISIA',
+						'TR' => 'TURKEY',
+						'TM' => 'TURKMENISTAN',
+						'TC' => 'TURKS AND CAICOS ISLANDS',
+						'TV' => 'TUVALU',
+						'UG' => 'UGANDA',
+						'UA' => 'UKRAINE',
+						'AE' => 'UNITED ARAB EMIRATES',
+						'GB' => 'UNITED KINGDOM',
+						'US' => 'UNITED STATES',
+						'UM' => 'UNITED STATES MINOR OUTLYING ISLANDS',
+						'UY' => 'URUGUAY',
+						'UZ' => 'UZBEKISTAN',
+						'VU' => 'VANUATU',
+						'VN' => 'VIET NAM',
+						'VG' => 'VIRGIN ISLANDS - BRITISH',
+						'VI' => 'VIRGIN ISLANDS - U.S.',
+						'WF' => 'WALLIS AND FUTUNA',
+						'EH' => 'WESTERN SAHARA',
+						'YE' => 'YEMEN',
+						'ZW' => 'ZIMBABWE'				
+				), Input::old('billingCountry'),array('class'=>'form-control')); !!}	
               </div>
           </div>
           <!--Three Blank Rows-->
@@ -512,11 +734,11 @@
               &nbsp;
           </div>
           <div class="row">
-              <label class="control-label col-sm-2 required">
+              <label class="control-label col-sm-2">
                   Host Address Line 2:
               </label>
               <div class="col-sm-5">
-                  {!!  Form::text('hostADDRESSLINE002',Input::old('hostADDRESSLINE002'),array('class'=>'form-control','placeholder'=>'Put N/A if does not apply.')) !!}
+                  {!!  Form::text('hostADDRESSLINE002',Input::old('hostADDRESSLINE002'),array('class'=>'form-control','placeholder'=>'')) !!}
               </div>
           </div>
           <div class="row">
@@ -633,11 +855,10 @@
                   Purpose of Your Stay:
               </label>
               <div class="col-sm-5">
-                  {!!  Form::textarea('hostPURPOSE_FOR_STAYING',Input::old('hostREASON_FOR_STAYING'),array('class'=>'form-control','maxlength'=>'200','Placeholder'=>'Please no more than 200 charaters')) !!}
+                  {!!  Form::textarea('hostPURPOSE_FOR_STAYING',Input::old('hostREASON_FOR_STAYING'),array('class'=>'form-control','maxlength'=>'200','Placeholder'=>'Please no more than 200 characters')) !!}
               </div>
-          </div>
-
-          <div class="row">
+          </div>		  
+		  <div class="row">
               <div class="col-md-12">
                   &nbsp;
               </div>
@@ -650,16 +871,15 @@
                   &nbsp;
               </div>
           </div>
-          <!--Start Billing Information-->
+          <!--Start Payment Information-->
           <div class="row">
               &nbsp;
           </div>
           <div class="row">
               <label class="control-label col-sm-2 required">
-                  Who will be responsible for billing:
+                  Who will be responsible for payment:
               </label>
               <div class="col-sm-4">
-
                   {!! Form::radio('billCharge','Guest',false,array('class'=>'#','id'=>'guestResponsible')) !!}
                   {!! Form::label('billCharge', 'Guest') !!}
                   <br/>
@@ -696,20 +916,25 @@
                   &nbsp;
               </div>
               <div class="col-sm-5">
-                  {!! Form::label('DepartmentalBookkeeper', 'Departmental Bookkeeper:', array('class' => '#'))  !!}
-                  {!! Form::text('DepartmentalBookkeeper',Input::old('DepartmentalBookkeeper'),array('class'=>'form-control','maxlength'=>'150')) !!}
+                  {!! Form::label('DepartmentalBookkeeper', 'Departmental Bookkeeper Name:', array('class' => '#'))  !!}
+                  {!! Form::text('DepartmentalBookkeeper',Input::old('DepartmentalBookkeeper'),array('class'=>'form-control','maxlength'=>'250')) !!}
               </div>
           </div>
-
-
-
-
+		  <div class="row">
+              <div class="col-sm-2">
+                  &nbsp;
+              </div>
+              <div class="col-sm-5">
+                  {!! Form::label('DepartmentalBookkeeperPhone', 'Departmental Bookkeeper Phone:', array('class' => '#'))  !!}
+                  {!! Form::text('DepartmentalBookkeeperPhone',Input::old('DepartmentalBookkeeperPhone'),array('class'=>'form-control','maxlength'=>'11')) !!}
+              </div>
+          </div>
           <!--Additional Information Here-->
           <hr>
 
           <div class="row">
               <label class="control-label col-sm-2">
-                  Please provide additional information about reservation here:
+                  Please provide additional information, ADA accommodation requests, or special needs regarding your reservation here.
               </label>
               <div class="col-sm-5">
                   {!!  Form::textarea('additionalGuestInformation',Input::old('additionalGuestInformation'),array('class'=>'form-control')) !!}
@@ -746,22 +971,14 @@
                   &nbsp;
               </div>
           </div>
-
-
-
-
-
           <div class="row">
               <div class="col-md-12">
                   {!!  Form::submit('Submit Reservation',array('class'=>'btn btn-sm btn-default')) !!}
                   {!!  Form::reset('Clear Information',array('class'=>'btn btn-sm btn-danger')) !!}
               </div>
           </div>
-
           {!! Form::close() !!}
       </form>
     </div>
-@stop
+@endsection
 
-
-@stop

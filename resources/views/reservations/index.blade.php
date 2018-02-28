@@ -77,9 +77,9 @@
                     <th>
                         Total Days
                     </th>
-                    <th>
-                        Total Guests Indicated
-                    </th>
+					<th>
+					    Total Guests Indicated
+					</th>
                     <th>
                         Total Charged
                     </th>
@@ -133,9 +133,9 @@
                         ?>
                         {{$difference}}
                     </td>
-                    <td>
-                        {{$myReservations->number_of_guests}}
-                    </td>
+					<td>
+						 {{$myReservations->number_of_guests}}
+					</td>
                     <td>
                         {{$myReservations->total_charge}}
                     </td>
@@ -165,7 +165,4 @@
             &nbsp;
         </div>
     </div>
-@stop
-
-
-@stop
+@endsection

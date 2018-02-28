@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>Coastal Quarters Guest Reservation System</title>
@@ -15,11 +16,7 @@
 
 <div class="container">
 <img class="img-responsive" src="{{URL::asset('img/uh_logo.png')}}"/>
-
 @yield('content')
-
-
-
 
 <!--Add Footer to all the pages-->
     <!--Main Footer content-->
@@ -35,9 +32,5 @@
             For Guest Reservations - Coastal Quarters support, questions, or feedback, please contact <a href="mailto:jjwill10@ncsu.edu">Josh Williams</a>, Web Developer
         </div>
     </div>
-
-
-
 </div>
-
 </html>

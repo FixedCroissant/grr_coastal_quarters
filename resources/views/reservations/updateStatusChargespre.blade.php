@@ -426,7 +426,7 @@
             </tr>
             <tr>
                 <td>
-                    # of Guests
+                    <span style='text-decoration:underline;'>Indicated</span> # of Guests:
                 </td>
                 <td>
                     {!! $reservations->number_of_guests !!}
@@ -464,7 +464,7 @@
             </tr>
             <tr>
                 <td>
-                    Host Department
+                    Host Department:
                 </td>
                 <td>
                     {!! $reservations->host_department_org !!}
@@ -472,7 +472,7 @@
             </tr>
             <tr>
                 <td>
-                    Host Address
+                    Host Address:
                 </td>
                 <td>
                     {!! $reservations->host_address_001 !!} <br/>
@@ -491,12 +491,22 @@
             </tr>
             <tr>
                 <td>
-                    Host E-Mail
+                    Host E-Mail:
                 </td>
                 <td>
                     {!! $reservations->host_email_address !!}
                 </td>
             </tr>
+			<tr>
+                <td>
+                    Reason for Staying:
+                </td>
+                <td>
+                    {!! $reservations->reason_for_staying !!}
+                </td>
+            </tr>
+			
+			
 
             <tr>
                 <td colspan="2">
@@ -505,36 +515,44 @@
             </tr>
             <tr>
                 <td>
-                    Who Pays
+                    Who Pays:
                 </td>
                 <td>
-                    {!! Form::text('who_pays',$reservations->who_pays,array()) !!}
+					{!! $reservations->who_pays !!}	
                 </td>
             </tr>
             <tr>
                 <td>
-                    OUC
+                    OUC:
                 </td>
                 <td>
-                    {!! Form::text('ouc',$reservations->ouc,array()) !!}
+                    {!! $reservations->ouc !!}
                 </td>
             </tr>
             <tr>
                 <td>
-                    Project Grant #
+                    Project Grant #:
                 </td>
                 <td>
-                    {!! Form::text('projgrant',$reservations->projgrant) !!}
+                    {!! $reservations->projgrant !!}
                 </td>
             </tr>
             <tr>
                 <td>
-                    Bookkeeper Information
+                    Bookkeeper Name: 
                 </td>
                 <td>
-                    {!! Form::text('bookkeeper',$reservations->bookkeeper) !!}
+                    {!! $reservations->bookkeeper !!}
                 </td>
             </tr>
+			<tr>
+                <td>
+                    Bookkeeper Phone Number:
+                </td>
+                <td>
+				{!! $reservations->bookkeeper_ph_number !!}
+                </td>
+            </tr>			
             <tr>
                 <td>
                     Agree To Terms?

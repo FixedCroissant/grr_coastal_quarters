@@ -15,8 +15,9 @@ class Kernel extends HttpKernel {
 		'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
 		'Illuminate\Session\Middleware\StartSession',
 		'Illuminate\View\Middleware\ShareErrorsFromSession',
-        /*Constant CSRF Token Errors when making a reservation, I have disabled this verification for this simple project.*/
-        /*'App\Http\Middleware\VerifyCsrfToken',*/
+		//Remove constant CSRF failures from happening.
+		//Removed 11/8/2016 @ 2:55pm.
+		/*'App\Http\Middleware\VerifyCsrfToken',*/
 	];
 
 	/**

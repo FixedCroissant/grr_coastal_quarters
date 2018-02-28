@@ -13,6 +13,8 @@ use App\Reservation;
 use Mail;
 //Get Input for updating reservation records
 use Input;
+//Use Carbon for Dates
+use Carbon\Carbon;
 
 class ReservationController extends Controller {
 
@@ -61,7 +63,16 @@ class ReservationController extends Controller {
 	 */
 	public function store(Request $request)
 	{
-
+		
+		/**Handle minimum of 5 days **/
+		$arrival = new Carbon( $request->input('guestarrivalDate'));
+		$departure = new Carbon($request->input('guestdepartureDate'));
+		$differenceInReservationDates = ($arrival->diff($departure)->days);
+		
+		//See what the difference is:
+		//return dd('this is your difference'. $difference);
+		
+		
         $validator = Validator::make($request->all(), [
             'firstNAME' => 'required',
             'lastNAME'=>'required',
@@ -81,8 +92,7 @@ class ReservationController extends Controller {
             'hostlastNAME'=>'required',
             'hostTITLE'=>'required',
             'hostDEPARTMENT'=>'required',
-            'hostADDRESSLINE001'=>'required',
-            'hostADDRESSLINE002'=>'required',
+            'hostADDRESSLINE001'=>'required',           
             'hostCITY'=>'required',
             'hostSTATE'=>'required',
             'hostZIP_CODE'=>'required',
@@ -100,6 +110,14 @@ class ReservationController extends Controller {
             //Go back to the prior page, but take along any input taht was submitted that was correct.
             return redirect()->back()->withErrors($validator->errors())->withInput();
         }
+		
+		//If the provided arrival date and departure date is not 5 nights or greater
+		//do not allow the reservation to process.
+		if($differenceInReservationDates < 5 )
+		{
+			//Go back to the prior page, but take along any input taht was submitted that was correct.
+            return redirect()->back()->with('message','It appears your reservation is not for the 5 night minimum. Coastal Quarters requires 5 night minimum.')->withInput();
+		}
 
         //Everything is okay, go ahead and continue making a reservation.
         else{
@@ -128,7 +146,7 @@ class ReservationController extends Controller {
             $reservation->billing_last_name = $request->input('billingLast_NAME');
             //Billing Address 001
             $reservation->billing_line_address_001 = $request->input('billingAddressLine001');
-            //Billing Address 002
+            //Billing Address 002 - Allow Null
             $reservation->billing_line_address_002 = $request->input('billingAddressLine002');
             //Billing City
             $reservation->billing_city = $request->input('billingCity');
@@ -151,9 +169,9 @@ class ReservationController extends Controller {
             $reservation->host_title = $request->input('hostTITLE');
             //HOST DEPARTMENT
             $reservation->host_department_org = $request->input('hostDEPARTMENT');
-            //HOST ADDRESS LINE 001
+            //HOST ADDRESS LINE 001 - Allows Null
             $reservation->host_address_001 = $request->input('hostADDRESSLINE001');
-            //HOST ADDRESS LINE 002
+            //HOST ADDRESS LINE 002 - Allows Null
             $reservation->host_address_002 = $request->input('hostADDRESSLINE002');
             //HOST CITY
             $reservation->host_city = $request->input('hostCITY');
@@ -175,8 +193,10 @@ class ReservationController extends Controller {
             $reservation->ouc = $request->input('OUC_Number');
             //PROJECT GRANT
             $reservation->projgrant = $request->input('ProjectGrantNumber');
-            //BookKeepr information (if any)
+            //BookKeeper information (if applies)
             $reservation->bookkeeper = $request->input('DepartmentalBookkeeper');
+			//BookKeeper  Phone Number (if applies)
+			$reservation->bookkeeper_ph_number = $request->input('DepartmentalBookkeeperPhone');
             //Terms and Conditions Agreed?
             $reservation->terms = $request->input('agree');
 
@@ -234,25 +254,27 @@ class ReservationController extends Controller {
 
 
             //Send e-mail message to the user.
-           /* Mail::send('emails.notification_messages.confirmationMessage', $data, function($message) use ($GUEST_TO_INFORMATION)
+            Mail::send('emails.notification_messages.confirmationMessage', $data, function($message) use ($GUEST_TO_INFORMATION)
             {
                 $message->to($GUEST_TO_INFORMATION['to'],$GUEST_TO_INFORMATION['fname'].','.$GUEST_TO_INFORMATION['lname']);
-                $message->subject('NCSU - CMAST Reservation Notice');
-                $message->from('test@example.com', 'NCSU Guest Services');
+                $message->subject('Coastal Quarters Reservation Notice');
+                $message->from('guestservices@ncsu.edu', 'NCSU Guest Services');
 
-            });*/
-
-
-           //Send message to University Official
-            Mail::send('emails.notification_messages.cmast_nc_state_notification_message', $data, function($message) use ($GUEST_TO_INFORMATION)
+            });
+			
+			//Send a email message to Staff at NC State University.
+			//Added 06-07-2017 @ 10:19AM
+			//CC myself.
+			  Mail::send('emails.notification_messages.cmast_nc_state_notification_message', $data, function($message) use ($GUEST_TO_INFORMATION)
            {
-               //Set email notice to first person
-               $message->to("emailaddress","LastName, FirstName");
-               //CC Me.
+               //Set email notice to Michelle Strickland.
+               $message->to("mstrick3@ncsu.edu","Strickland, Michelle");
+			   //CC Me.
                $message->cc("jjwill10@ncsu.edu","Williams,Joshua");
+			   //CC Tim
+               $message->cc("tsblair@ncsu.edu","Blair, Tim");
                $message->subject('NCSU - CMAST Reservation Notice');
                $message->from('do_not_reply@ncsu.com', 'NCSU Guest Services');
-
            });
 
             //Notify the person that it successfully went through.
@@ -273,7 +295,7 @@ class ReservationController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		//Not used
 	}
 
 	/**
@@ -432,7 +454,7 @@ class ReservationController extends Controller {
         //Save Information to be used in the email message sent below.
         //THIS HANDLES THE TO ADDRESS AND THE FIRST NAME & LAST NAME THAT IS SHOWN ON THE E_MAIL
         $GUEST_TO_INFORMATION = array(
-            'to'=>$reservationInformation->billing_email_address,
+            'to'=>$reservationInformation->guest_email_address,
             'lname'=>$reservationInformation->l_name,
             'fname'=>$reservationInformation->f_name
         );
@@ -496,7 +518,7 @@ class ReservationController extends Controller {
                                 });
                     break;
 
-                    //Rooms are full, there is no additional availability, send message.
+                    //Rooms are full, there is no additional availability, send denied message.
                     case "Denied":
                             //E-Mail message -- Denied, no rooms.
                         //Send e-mail message to the user.
@@ -517,7 +539,7 @@ class ReservationController extends Controller {
 
     //Go back to the prior view with a message.
     //Return back to the view.
-    return Redirect::back()->with('message','Reservation Status updated and E-Mail Sent to Billing E-Mail.');
+    return Redirect::back()->with('message','Reservation Status updated and E-Mail Sent to Guest E-Mail.');
 
     }
 

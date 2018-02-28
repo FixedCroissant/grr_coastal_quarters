@@ -15,7 +15,7 @@ Thank you for wanting to stay with us at Coastal Quarters.
 <p>
 Your payment for your reservation through the following dates, {{$arrivalDate}} to {{$departureDate}} at Coastal Quarters is in the process of being refunded. <br/>
 <br/>
-It may take 2-3 business days for the payment to show up back on your bank account.
+It may take 2-3 business days for the payment to show up back in your bank account.
 <br/>
 <br/>
 </p>

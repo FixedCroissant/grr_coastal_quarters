@@ -1,5 +1,6 @@
 <?php
 
+
 return [
 
 	/*
@@ -78,9 +79,13 @@ return [
 	|
 	*/
 
-	'key' => env('APP_KEY', 'SomeRandomString'),
+	'key' => env('APP_KEY', 'pnwhcL2a9hJBS5epfiuh1xslBrKFi4T4'),
 
-	'cipher' => MCRYPT_RIJNDAEL_128,
+    //OLD CIPHER INFORMATION FOR PRIOR VERSION OF LARAVEL.
+    //'cipher' => MCRYPT_RIJNDAEL_128,
+
+    //NEW VERSION OF CIPHER INFORMATION FOR L 5.1
+    'cipher'=> 'AES-256-CBC',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -138,7 +143,7 @@ return [
         // AdminLTE template provider
         'Acacha\AdminLTETemplateLaravel\app\Providers\AdminLTETemplateServiceProvider',
         //HTML Service Provider
-        'Collective\Html\HTMLServiceProvider',
+        'Collective\Html\HtmlServiceProvider',
 
 		/*
 		 * Application Service Providers...
@@ -147,7 +152,9 @@ return [
 		'App\Providers\BusServiceProvider',
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
-		'App\Providers\RouteServiceProvider',
+		'App\Providers\RouteServiceProvider',		
+		//Needed for Laravel 5.1
+		'Illuminate\Broadcasting\BroadcastServiceProvider'
 
 	],
 
