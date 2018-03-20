@@ -226,7 +226,7 @@
             </p>
         </div>
     </div>
-@stop
+@endsection
 
 
-@stop
+@endsection
