@@ -1,33 +1,15 @@
 <?php
-//SEND EMAIL VIA PHP MAILER
-//Turned on 11/17/2016.
 return array(
-    "driver" => "mail",
-    "host" => "null",
-    "port" => null,
+    "driver" => env('MAIL_DRIVER','log'),
+    "host" => env('MAIL_HOST','smtp.mailgun.org'),
+    "port" => env('MAIL_PORT',587),
     "from" => array(
-        "address" => "do_not_reply@ncsu.com",
-        "name" => "Guest Reservation - Coastal Quarters"
+        "address" => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        "name" => env('MAIL_FROM_NAME','Example')
     ),
-    "username" => "null",
-    "password" => "null",
+    "username" => env('MAIL_USERNAME'),
+    "password" => env('MAIL_PASSWORD'),
     "sendmail" => "/usr/sbin/sendmail -bs",
     "pretend" => false
 );
 
-//TESTING E-MAIL ACCOUNT
-//LIVE AS OF 10-18-2016
-/*
-return array(
-    "driver" => "smtp",
-    "host" => "mailtrap.io",
-    "port" => 2525,
-    "from" => array(
-        "address" => "from@example.com",
-        "name" => "Example"
-    ),
-    "username" => "XXXXXXXXXXXX",
-    "password" => "XXXXXXXXXXXX",
-    "sendmail" => "/usr/sbin/sendmail -bs",
-    "pretend" => false
-);*/
