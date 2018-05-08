@@ -276,7 +276,7 @@
                     <span style="font-size:xx-small;">Not editable</span>
                 </td>
                 <td>
-                    {!! $reservations->terms !!}
+                    {!! ucfirst($reservations->terms) !!}
                 </td>
             </tr>
             <tr>
@@ -288,7 +288,4 @@
             </table>
         </div>
     </div>
-@stop
-
-
 @stop

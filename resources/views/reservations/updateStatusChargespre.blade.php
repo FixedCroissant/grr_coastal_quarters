@@ -570,6 +570,3 @@
         </div>
     </div>
 @stop
-
-
-@stop

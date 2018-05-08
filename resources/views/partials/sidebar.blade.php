@@ -28,7 +28,7 @@
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="{{ url('home') }}"><i class='fa fa-link'></i> <span>Home</span></a></li>
             <li><a href="{{Request::root()}}/reservation"><i class='fa fa-link'></i> <span>Current Reservations</span></a></li>
-            <li><a href="{{Request::root()}}/users"><i class='fa fa-link'></i>List Users</a></li>
+            <li><a href="{{Request::root()}}/users"><i class='fa fa-link'></i><span>List Users</span></a></li>
             <li class="treeview" style="display:none;">
                 <a href="#"><i class='fa fa-link'></i> <span>Multi-Tiered</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
